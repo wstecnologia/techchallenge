@@ -1,9 +1,16 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import { routes } from './Routes';
+import express from 'express'
+import bodyParser from 'body-parser'
+import { routes } from './Routes'
 
-const app = express();
-app.use(bodyParser.json());
-app.use('/api', routes);
+import swaggerUi from 'swagger-ui-express'
+import swaggerSpec from './swagger'
 
-export default app;
+const app = express()
+
+app.use(bodyParser.json())
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+app.use('/api', routes)
+
+export default app
