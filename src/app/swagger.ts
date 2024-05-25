@@ -4,15 +4,15 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Documentação TechChalleger API Lanchonete WS',
+      title: 'Techchalleger Api Lanchonete WS Documentation',
       version: '1.0.0',
     },
    
         paths: {
             '/api/customers': {                
                 post: {
-                tags: ['Clientes'],
-                summary: 'Cadastrar Clientes',
+                tags: ['Customers'],
+                summary: 'Register Customers',
                 requestBody: {
                     content:{
                         'application/json':{
@@ -38,23 +38,23 @@ const options = {
                 },
                 responses:{
                     200:{
-                        description:"Sucesso",                         
+                        description:"Success",                         
                     },
                     400:{
-                        description: 'Requisição inválida',
+                        description: 'Invalid Request',
                     },
                     401:{
-                        description: 'Acesso inválido',
+                        description: 'Invalid Access',
                     },
 
                     500:{
-                        description: 'Erro interno do servidor',
+                        description: 'Internal Server Error',
                     }
                 }
                 },
                 get: {
-                    tags: ['Clientes'],
-                    summary: 'Listar Clientes',
+                    tags: ['Customers'],
+                    summary: 'List All customers',
 
                     responses:{
                         200:{
@@ -78,8 +78,8 @@ const options = {
 
             '/api/products': {            
                 post: {
-                tags: ['Produtos'],
-                summary: 'Cadastrar Produtos',
+                tags: ['Products'],
+                summary: 'Register Product',
                 requestBody: {
                     content:{
                         'application/json':{
@@ -113,44 +113,45 @@ const options = {
                 },
                 responses:{
                     200:{
-                        description:"Sucesso",                         
+                        description:"Success",                         
                     },
                     400:{
-                        description: 'Requisição inválida',
+                        description: 'Invalid Request',
                     },
                     401:{
-                        description: 'Acesso inválido',
+                        description: 'Invalid Access',
                     },
+
                     500:{
-                        description: 'Erro interno do servidor',
+                        description: 'Internal Server Error',
                     }
                 }
                 },
                 get: {
-                    tags: ['Produtos'],
-                    summary: 'Listar Produtos',
+                    tags: ['Products'],
+                    summary: 'List All Products',
 
                     responses:{
                         200:{
-                            description:"Sucesso",                         
+                            description:"Success",                         
                         },
                         400:{
-                            description: 'Requisição inválida',
+                            description: 'Invalid Request',
                         },
                         401:{
-                            description: 'Acesso inválido',
+                            description: 'Invalid Access',
                         },
                         404:{
-                            description:'Produtos não encontrado',
+                            description:"Products not found",
                         },
                         500:{
-                            description: 'Erro interno do servidor',
+                            description: 'Internal Server Error',
                         }
                     }
                 },
                 put:{
-                    tags: ['Produtos'],
-                    summary: 'Editar Produto',                    
+                    tags: ['Products'],
+                    summary: 'Edit Product',                    
                     requestBody:{
                         content:{
                             
@@ -188,31 +189,31 @@ const options = {
                     },
                     responses:{
                         200:{
-                            description:"Sucesso",
+                            description:"Success",                         
                         },
                         400:{
-                            description: 'Requisição inválida',
+                            description: 'Invalid Request',
                         },
                         401:{
-                            description: 'Acesso inválido',
+                            description: 'Invalid Access',
                         },
                         404:{
-                            description:'Produto não encontrado'
+                            description: 'Product not found'
                         },
                         500:{
-                            description: 'Erro interno do servidor',
+                            description: 'Internal Server Error',
                         }
 
                     }
                 },
                 delete:{
-                    tags: ['Produtos'],
-                    summary: 'Deletar Produto',
+                    tags: ['Products'],
+                    summary: 'Delete Product',
                     parameters: [
                         {                          
                           name: 'id',
                           in: 'query',
-                          description: 'Codigo do produto',
+                          description: 'Product Code',
                           required: true,
                           schema: {
                             type: 'number',                                                
@@ -241,15 +242,16 @@ const options = {
             
             '/api/orders': {            
                 post: {
-                tags: ['Pedidos'],
-                summary: 'Registrar novo pedido',
+                tags: ['Orders'],
+                summary: 'Register new order',
                 }
             },
-            
+
             '/api/orders/payment': {            
                 post: {
-                tags: ['Pedidos'],
-                summary: 'Registrar pagamento pedido',
+                tags: ['Orders'],
+                summary: 'Register payment request',
+
                 }
             }            
         },
