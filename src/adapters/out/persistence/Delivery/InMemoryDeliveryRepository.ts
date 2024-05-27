@@ -1,5 +1,5 @@
 import Delivery from '@/core/delivery/domain/entities/Delivery'
-import DeliveryRepository from '@/core/delivery/ports/DeliveryRepository'
+import DeliveryRepository from '@/core/delivery/ports/out/DeliveryRepository'
 
 export default class InMemoryDeliveryRepository implements DeliveryRepository {
   private deliveries: Delivery[] = []

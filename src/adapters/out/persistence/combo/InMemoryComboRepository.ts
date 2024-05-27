@@ -1,5 +1,5 @@
 import Combo from '@/core/combo/domain/entities/Combo'
-import ComboRepository from '@/core/combo/ports/ComboRepository'
+import ComboRepository from '@/core/combo/ports/out/IComboRepository.usecase'
 
 export default class InMemoryComboRepository implements ComboRepository {
   private combos: Combo[] = []

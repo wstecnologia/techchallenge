@@ -1,16 +1,15 @@
 import { Router } from 'express'
-import { AuthenticationController } from '@/adapters/in/external/Authentication/AuthenticationController'
-import { AuthenticationService } from '@/core/authentication/domain/services/AuthenticationService'
-import { AuthenticateUserUseCase } from '@/core/authentication/usecases/AuthenticateUserUseCase'
-import { RegisterUserUseCase } from '@/core/authentication/usecases/RegisterUserUseCase'
+import { AuthenticationController } from '@/adapters/in/controllers/Authentication/AuthenticationController'
+import { AuthenticationUseCase } from '@/core/authentication/domain/usecases/Authentication.usecase'
 import { InMemoryUserRepository } from '@/adapters/out/persistence/Authentication/InMemoryUserRepository'
+import { RegisterUserUseCase } from '@/core/authentication/domain/usecases/RegisterUser.usecase'
 
 const router = Router()
 
 const userRepository = new InMemoryUserRepository()
-const authService = new AuthenticationService(userRepository)
-const registerUserUseCase = new RegisterUserUseCase(authService)
-const authenticateUserUseCase = new AuthenticateUserUseCase(authService)
+const authenticateUserUseCase = new AuthenticationUseCase(userRepository)
+const registerUserUseCase = new RegisterUserUseCase(authenticateUserUseCase)
+
 const authController = new AuthenticationController(registerUserUseCase, authenticateUserUseCase)
 
 router.post('/register', authController.register.bind(authController))
