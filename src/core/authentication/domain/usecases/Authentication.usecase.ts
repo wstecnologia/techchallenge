@@ -6,7 +6,7 @@ import { User } from '../entities/User'
 export class AuthenticationUseCase implements IRegisterUserUseCase, IAuthenticateUserUseCase {
   constructor(private userRepository: IUserRepository) {}
 
-  public register(user: User): User {
+  public execute(user: User): User {
     this.userRepository.save(user)
     return user
   }

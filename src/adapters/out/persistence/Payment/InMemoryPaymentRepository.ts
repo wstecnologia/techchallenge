@@ -1,5 +1,5 @@
 import Payment from '@/core/payment/domain/entities/Payment'
-import PaymentRepository from '@/core/payment/ports/out/persistence/PaymentRepository'
+import PaymentRepository from '@/core/payment/ports/out/PaymentRepository'
 
 export default class InMemoryPaymentRepository implements PaymentRepository {
   private payments: Payment[] = []
