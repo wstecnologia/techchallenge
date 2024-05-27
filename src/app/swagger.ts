@@ -54,7 +54,7 @@ const options = {
                 },
                 get: {
                     tags: ['Customers'],
-                    summary: 'List All customers',
+                    summary: 'List customers',
 
                     responses:{
                         200:{
@@ -74,6 +74,30 @@ const options = {
                         }
                     }
                 },
+            },
+            '/api/customers/cpf':{
+                get:{
+                    tags: ['Customers'],
+                    summary: 'Consult customer by CPF',
+                    
+                    responses:{
+                        200:{
+                            description:"Success",                         
+                        },
+                        400:{
+                            description: 'Invalid Request',
+                        },
+                        401:{
+                            description: 'Invalid Access',
+                        },
+                        404:{
+                            description:"Products not found",
+                        },
+                        500:{
+                            description: 'Internal Server Error',
+                        }
+                    }       
+                }
             },
 
             '/api/products': {            
@@ -240,13 +264,26 @@ const options = {
                 }
             },  
             
-            '/api/orders': {            
+            '/api/orders/status': {            
                 post: {
                 tags: ['Orders'],
-                summary: 'Register new order',
+                summary: 'Return list of order by status',
                 }
             },
-
+            '/api/orders/update-status': {            
+                post: {
+                tags: ['Orders'],
+                summary: 'Update status order',
+                }
+            },
+            
+            
+            '/orders/add-item': {            
+                post: {
+                tags: ['Orders'],
+                summary: 'Register item in order',
+                }
+            },
             '/api/orders/payment': {            
                 post: {
                 tags: ['Orders'],
