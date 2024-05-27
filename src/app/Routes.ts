@@ -55,11 +55,11 @@ router.delete('/products', (request: Request, response: Response) => {
 
 //**Orders */
 router.post('/new-order', (request: Request, response: Response) =>
-  response.send({message: "Pedido criado com sucesso"})
+  response.send({ message: 'Pedido criado com sucesso' }),
 )
 
 router.post('/orders/add-item', (request: Request, response: Response) =>
-  response.send({message: "Item adicionado com sucesso"})
+  response.send({ message: 'Item adicionado com sucesso' }),
 )
 
 /*
@@ -70,16 +70,16 @@ router.post('/orders/add-item', (request: Request, response: Response) =>
   4. Finalizado -> Atendente entregou pedido ao cliente
 */
 router.put('/orders/update-status', (request: Request, response: Response) =>
-  response.send({message: "Status atualizado com sucesso com sucesso"})
+  response.send({ message: 'Status atualizado com sucesso com sucesso' }),
 )
 
 router.get('/orders/status', (request: Request, response: Response) =>
   /*Cada setor vai ter o status especifico do progresso*/
-  response.send({message: "lista de status retornada com sucesso"})
+  response.send({ message: 'lista de status retornada com sucesso' }),
 )
 
 router.post('/orders/payment', (request: Request, response: Response) =>
-  response.send({message: "Pagamento realizado com sucesso"})
+  response.send({ message: 'Pagamento realizado com sucesso' }),
 )
 
 export { router as routes }
