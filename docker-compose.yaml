@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_ws
+    restart: always
+    ports:
+      - 3306:3306
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lanchonete_ws
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin@123
+    volumes:
+      - ./data:/var/lib/mysql
+
+  lanchonetews:
+      image: wstecnologia/lanchonetews:v1.0
+      restart: always
+      ports:
+        - 3000:3000
+      environment:
+        WS_DB_HOST: mysql
+        WS_DB_USER: root
+        WS_DB_PASSWORD: admin
+        WS_DB_NAME: lanchonete_ws
+      depends_on:
+        - mysql   

@@ -20,6 +20,29 @@ router.post('/login', (request: Request, response: Response) =>
 )
 
 // TechChalleger
+
+router.post('/auth', (request: Request, response: Response) => {
+    const {tipo_autenticacao,name,description,category} = request.body
+    switch (tipo_autenticacao) {
+      case 0:
+        response.status(200).json({ message: 'Cliente autenticado com sucesso' })
+      case 1:
+          if(name === "" || description === ""){
+            response.status(401).json({message: "Informe o nome e email"})
+          }
+
+        case 2:
+          if(category === "" ){
+            response.status(401).json({message: "Informe o numero do cpf"})
+          }
+
+      default:
+        response.status(401).json({message: "Selecione um metodo de autenticação valido"})
+    }
+
+  }  
+)
+
 //**Customers */
 router.post('/customers', (request: Request, response: Response) => {
   response.status(200).json({ message: 'Cliente cadastrado com sucesso' })
@@ -64,10 +87,15 @@ router.post('/orders/add-item', (request: Request, response: Response) =>
 
 /*
   Lista de progresso
-  1. Recebido -> Cliente finalizou solucitação
+  1. Pendente -> Cliente finalizou solucitação (Recebido)
   2. Em preparação -> Cozinha iniciou preparo
   3. Pronto -> Cozinha finalizou Preparo
   4. Finalizado -> Atendente entregou pedido ao cliente
+
+  Lista de Setores
+  1. Cozinha
+  2. Balcão Entrega
+
 */
 router.put('/orders/update-status', (request: Request, response: Response) =>
   response.send({ message: 'Status atualizado com sucesso com sucesso' }),

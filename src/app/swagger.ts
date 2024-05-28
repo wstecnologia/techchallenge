@@ -9,6 +9,56 @@ const options = {
     },
    
         paths: {
+            
+            '/api/auth':{
+                post: {
+                    tags: ['Authentication'],
+                    summary: 'Customers Authentication',
+                    requestBody: {
+                        content:{
+                            'application/json':{
+                                schema:{
+                                    type:'object',
+                                    properties:{
+                                        tipo_autenticacao:{
+                                            type:'number',
+                                            example:0
+                                        },
+                                        name:{
+                                            type:'string',
+                                            example:"Nome"
+                                        },
+                                        description:{
+                                            type:'string',
+                                            example:"Email"
+                                        }, 
+                                        category:{
+                                            type:'string',
+                                            example:"Cpf"
+                                        },                                                               
+                                                                    
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responses:{
+
+                        200:{
+                            description:"Success",                         
+                        },
+                        400:{
+                            description: 'Invalid Request',
+                        },
+                        401:{
+                            description: 'Invalid Access',
+                        },
+                        500:{
+                            description: 'Internal Server Error',
+                        }
+                    }
+                }
+            },
             '/api/customers': {                
                 post: {
                 tags: ['Customers'],
@@ -37,6 +87,9 @@ const options = {
                     }
                 },
                 responses:{
+                    201:{
+                        description:"Created",                         
+                    },
                     200:{
                         description:"Success",                         
                     },
@@ -136,6 +189,9 @@ const options = {
                     }
                 },
                 responses:{
+                    201:{
+                        description:"Created",                         
+                    },
                     200:{
                         description:"Success",                         
                     },
@@ -265,15 +321,63 @@ const options = {
             },  
             
             '/api/orders/status': {            
-                post: {
+                get: {
                 tags: ['Orders'],
                 summary: 'Return list of order by status',
+                parameters: [
+                    {                          
+                        name: 'Sector Code',
+                        in: 'query',
+                        description: 'Sector Code',
+                        required: true,
+                        schema: {
+                          type: 'number',                                                
+                        }
+                      }
+                ],                
+                responses:{
+
+                    200:{
+                        description:"Success",                         
+                    },
+                    400:{
+                        description: 'Invalid Request',
+                    },
+                    401:{
+                        description: 'Invalid Access',
+                    },
+
+                    500:{
+                        description: 'Internal Server Error',
+                    }
+                }
+                
                 }
             },
             '/api/orders/update-status': {            
-                post: {
+                put: {
                 tags: ['Orders'],
-                summary: 'Update status order',
+                summary: 'Update order status',
+                parameters: [
+                    {                          
+                        name: 'Orders Code ',
+                        in: 'query',
+                        description: 'Sector Code',
+                        required: true,
+                        schema: {
+                          type: 'number',                                                
+                        }
+                    },
+                    {                          
+                        name: 'Sector Code',
+                        in: 'query',
+                        description: 'Sector Code',
+                        required: true,
+                        schema: {
+                          type: 'number',                                                
+                        }
+                    }
+                ],  
                 }
             },
             
