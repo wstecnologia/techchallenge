@@ -1,6 +1,6 @@
-import db from '@/adapters/db/db'
 import Customer from '@/core/customer/domain/entities/Customer'
 import ICustomerRepository from '@/core/customer/ports/out/CustomerRepository'
+import db from '../DB/db'
 
 export default class CustomerRepository implements ICustomerRepository {
   private customers: Customer[] = []
@@ -13,12 +13,7 @@ export default class CustomerRepository implements ICustomerRepository {
     await db.query(
       `insert into usuarios (id, nome, email, senha)
       values ($1, $2, $3, $4)`,
-          [
-            customer.id,
-            customer.name,
-            customer.email,
-            customer.cpf,
-          ]
-      )
+      [customer.id, customer.name, customer.email, customer.cpf],
+    )
   }
 }
