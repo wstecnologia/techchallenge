@@ -23,4 +23,12 @@ export default class CustomerUseCase {
     return newCustomer
     
   }
+
+  async listAllCustomers(): Promise<Customer[]>{
+    return await this.customerRepository.listAll()    
+  }
+
+  async getCustomerCpf(cpf:string): Promise<Customer|null>{
+    return await this.customerRepository.findByCpf(cpf)
+  }
 }
