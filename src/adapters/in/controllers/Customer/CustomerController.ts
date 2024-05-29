@@ -1,23 +1,32 @@
 import CustomerUseCase from '@/core/customer/domain/usecase/Customer.usecase'
-import { Request, Response } from 'express'
 import CustomerRepository from '@/adapters/out/persistence/Customer/CustomerRepository'
 import Customer from '@/core/customer/domain/entities/Customer'
-
-const customerRepository = new CustomerRepository()
-//const customerUseCase = new CustomerUseCase(customerRepository)
+import { error } from 'console'
 
 export default class CustomerController {
   constructor(
     private customerUseCase:CustomerUseCase
   ){}
 
-   async register(customer: Customer) {
+  async register(customer: Customer) {
+  
+    return await this.customerUseCase.registerCustomer(customer)
     
-    try {
-      return await this.customerUseCase.registerCustomer(customer)
-      
-    } catch (e: any) {
-      throw new Error(e.message)
+  }
+
+  async listAll() { 
+    return await this.customerUseCase.listAllCustomers()     
+  }
+
+  async getCustomerCpf(cpf:string){
+    if(cpf.length !== 11){
+      throw new Error("O número de cpf deve conter 11 digitos")
     }
+    
+    if(!cpf.toString().trim()){
+      throw new Error("Informe um número valido")      
+    }
+
+    return await this.customerUseCase.getCustomerCpf(cpf)
   }
 }

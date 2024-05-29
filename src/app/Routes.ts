@@ -3,16 +3,16 @@ import { InMemoryUserRepository } from '@/adapters/out/persistence/Authenticatio
 import { RegisterUserUseCase } from '@/core/authentication/domain/usecases/RegisterUser.usecase'
 import { AuthenticationUseCase } from '@/core/authentication/domain/usecases/Authentication.usecase'
 import { AuthenticationController } from '@/adapters/in/controllers/Authentication/AuthenticationController'
-import { dbUserRepository } from '@/adapters/out/persistence/Authentication/dbUserRepository'
 import CustomerController from '@/adapters/in/controllers/Customer/CustomerController'
 import CustomerUseCase from '@/core/customer/domain/usecase/Customer.usecase'
+import CustomerRepository from '@/adapters/out/persistence/Customer/CustomerRepository'
 
 const router = Router()
 
 const userRepository = new InMemoryUserRepository()
 const authenticateUserUseCase = new AuthenticationUseCase(userRepository)
 const registerUserUseCase = new RegisterUserUseCase(authenticateUserUseCase)
-const repositorioUsuario = new dbUserRepository()
+const repositorioUsuario = new (CustomerRepository)
 const customerUserCase = new CustomerUseCase(repositorioUsuario)
 
 const authController = new AuthenticationController(registerUserUseCase, authenticateUserUseCase)
@@ -63,12 +63,28 @@ router.post('/customers', (request: Request, response: Response) => {
   response.status(200).json(user)
 })
 
-router.get('/customers', (request: Request, response: Response) => {
-  let clientes: Object[] = []
-  clientes.push({ nome: 'Savio', email: 'saviodba@gmail.com', cpf: '12345678909' })
-  clientes.push({ nome: 'Wilson', email: 'wilson@gmail.com', cpf: '12345678909' })
+router.get('/customers', async(request: Request, response: Response) => {
+  try {
+    const registrarusuariocontroller = new CustomerController(customerUserCase)
+    const lstCustomers = await registrarusuariocontroller.listAll()
+    response.status(200).json(lstCustomers)  
+  } catch (error) {
+    response.status(400).json({ message: error.message })
+  }
 
-  response.status(200).json(clientes)
+})
+
+router.get('/customers/cpf', async(request: Request, response: Response) => {
+  try {
+    const { cpf } = request.query
+    
+    const registrarusuariocontroller = new CustomerController(customerUserCase)
+    const customer = await registrarusuariocontroller.getCustomerCpf(cpf)
+    response.status(200).json(customer)  
+  } catch (error) {
+    response.status(400).json({ message: error.message })
+  }
+
 })
 
 //**Products */

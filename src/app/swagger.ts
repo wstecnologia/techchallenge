@@ -128,7 +128,18 @@ const options = {
                 get:{
                     tags: ['Customers'],
                     summary: 'Consult customer by CPF',
-                    
+                    parameters: [
+                        {                          
+                            name: 'cpf',
+                            in: 'query',
+                            description: 'Cpf Number',
+                            required: true,
+                            schema: {
+                              type: 'string',                                                
+                            }
+                        },
+                        
+                    ],
                     responses:{
                         200:{
                             description:"Success",                         
