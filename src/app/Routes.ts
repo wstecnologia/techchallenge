@@ -12,6 +12,8 @@ const router = Router()
 const userRepository = new InMemoryUserRepository()
 const authenticateUserUseCase = new AuthenticationUseCase(userRepository)
 const registerUserUseCase = new RegisterUserUseCase(authenticateUserUseCase)
+const repositorioUsuario = new dbUserRepository()
+const customerUserCase = new CustomerUseCase(repositorioUsuario)
 
 const authController = new AuthenticationController(registerUserUseCase, authenticateUserUseCase)
 
@@ -53,11 +55,10 @@ router.post('/auth', (request: Request, response: Response) => {
 
 //**Customers */
 router.post('/customers', (request: Request, response: Response) => {
-  const repositorioUsuario = new dbUserRepository()
-  const customerUserCase = new CustomerUseCase(repositorioUsuario)
+
   const registrarusuariocontroller = new CustomerController(customerUserCase)
 
-  const user = registrarusuariocontroller.register(request, response)
+  const user = registrarusuariocontroller.register(request.body)
 
   response.status(200).json(user)
 })
