@@ -21,20 +21,16 @@ const options = {
                                     type:'object',
                                     properties:{
                                         tipo_autenticacao:{
-                                            type:'number',
-                                            example:0
+                                            type:'number',                                            
                                         },
                                         name:{
-                                            type:'string',
-                                            example:"Nome"
+                                            type:'string',                                            
                                         },
-                                        description:{
-                                            type:'string',
-                                            example:"Email"
+                                        email:{
+                                            type:'string',                                            
                                         }, 
-                                        category:{
-                                            type:'string',
-                                            example:"Cpf"
+                                        cpf:{
+                                            type:'string',                                           
                                         },                                                               
                                                                     
                                     }
@@ -69,7 +65,7 @@ const options = {
                             schema:{
                                 type:'object',
                                 properties:{
-                                    nome:{
+                                    name:{
                                         type:'string',
                                         example:"João Pereira"
                                     },

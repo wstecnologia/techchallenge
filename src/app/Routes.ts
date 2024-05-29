@@ -3,6 +3,9 @@ import { InMemoryUserRepository } from '@/adapters/out/persistence/Authenticatio
 import { RegisterUserUseCase } from '@/core/authentication/domain/usecases/RegisterUser.usecase'
 import { AuthenticationUseCase } from '@/core/authentication/domain/usecases/Authentication.usecase'
 import { AuthenticationController } from '@/adapters/in/controllers/Authentication/AuthenticationController'
+import { dbUserRepository } from '@/adapters/out/persistence/Authentication/dbUserRepository'
+import CustomerController from '@/adapters/in/controllers/Customer/CustomerController'
+import CustomerUseCase from '@/core/customer/domain/usecase/Customer.usecase'
 
 const router = Router()
 
@@ -15,6 +18,7 @@ const authController = new AuthenticationController(registerUserUseCase, authent
 router.post('/register', (request: Request, response: Response) =>
   authController.register(request, response),
 )
+
 router.post('/login', (request: Request, response: Response) =>
   authController.login(request, response),
 )
@@ -22,8 +26,12 @@ router.post('/login', (request: Request, response: Response) =>
 // TechChalleger
 
 router.post('/auth', (request: Request, response: Response) => {
-    const {tipo_autenticacao,name,description,category} = request.body
-    switch (tipo_autenticacao) {
+    const {tipo_autenticacao,name,email,cpf} = request.body
+
+    console.log(tipo_autenticacao, name, email, cpf)
+    authController.register(request, response),
+    response.status(200).json({ message: 'Cliente autenticado com sucesso' })
+    /*switch (tipo_autenticacao) {
       case 0:
         response.status(200).json({ message: 'Cliente autenticado com sucesso' })
       case 1:
@@ -38,14 +46,20 @@ router.post('/auth', (request: Request, response: Response) => {
 
       default:
         response.status(401).json({message: "Selecione um metodo de autenticação valido"})
-    }
+    }*/
 
   }  
 )
 
 //**Customers */
 router.post('/customers', (request: Request, response: Response) => {
-  response.status(200).json({ message: 'Cliente cadastrado com sucesso' })
+  const repositorioUsuario = new dbUserRepository()
+  const customerUserCase = new CustomerUseCase(repositorioUsuario)
+  const registrarusuariocontroller = new CustomerController(customerUserCase)
+
+  const user = registrarusuariocontroller.register(request, response)
+
+  response.status(200).json(user)
 })
 
 router.get('/customers', (request: Request, response: Response) => {

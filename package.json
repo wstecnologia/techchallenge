@@ -36,6 +36,8 @@
     "express": "^4.19.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "pg-promise": "^11.7.8"
+    "pg-promise": "^11.7.8",
+    "dotenv": "^16.4.5",
+    "uuid": "^9.0.1"
   }
 }
