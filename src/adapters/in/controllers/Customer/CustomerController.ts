@@ -14,8 +14,8 @@ export default class CustomerController {
     
   }
 
-  async listAll() { 
-    return await this.customerUseCase.listAllCustomers()     
+  async listAll(page:number = 0) { 
+    return await this.customerUseCase.listAllCustomers(page)     
   }
 
   async getCustomerCpf(cpf:string){

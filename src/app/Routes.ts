@@ -14,13 +14,13 @@ const authenticateUserUseCase = new AuthenticationUseCase(userRepository)
 const registerUserUseCase = new RegisterUserUseCase(authenticateUserUseCase)
 const repositorioUsuario = new (CustomerRepository)
 const customerUserCase = new CustomerUseCase(repositorioUsuario)
+const registrarusuariocontroller = new CustomerController(customerUserCase)
 
 const authController = new AuthenticationController(registerUserUseCase, authenticateUserUseCase)
 
 router.post('/register', (request: Request, response: Response) =>
   authController.register(request, response),
 )
-
 router.post('/login', (request: Request, response: Response) =>
   authController.login(request, response),
 )
@@ -55,18 +55,19 @@ router.post('/auth', (request: Request, response: Response) => {
 
 //**Customers */
 router.post('/customers', (request: Request, response: Response) => {
+  try {  
+    const user = registrarusuariocontroller.register(request.body)
 
-  const registrarusuariocontroller = new CustomerController(customerUserCase)
-
-  const user = registrarusuariocontroller.register(request.body)
-
-  response.status(200).json(user)
+    response.status(200).json(user)
+  } catch (error) {
+    response.status(400).json({ message: error.message })
+  }
 })
 
 router.get('/customers', async(request: Request, response: Response) => {
   try {
-    const registrarusuariocontroller = new CustomerController(customerUserCase)
-    const lstCustomers = await registrarusuariocontroller.listAll()
+    const { page } = request.query
+    const lstCustomers = await registrarusuariocontroller.listAll(Number(page))
     response.status(200).json(lstCustomers)  
   } catch (error) {
     response.status(400).json({ message: error.message })
@@ -79,13 +80,14 @@ router.get('/customers/cpf', async(request: Request, response: Response) => {
     const { cpf } = request.query
     
     const registrarusuariocontroller = new CustomerController(customerUserCase)
-    const customer = await registrarusuariocontroller.getCustomerCpf(cpf)
+    const customer = await registrarusuariocontroller.getCustomerCpf(cpf.toString())
     response.status(200).json(customer)  
   } catch (error) {
     response.status(400).json({ message: error.message })
   }
 
 })
+
 
 //**Products */
 router.post('/products', (request: Request, response: Response) => {

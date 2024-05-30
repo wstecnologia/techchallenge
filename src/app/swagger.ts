@@ -104,7 +104,19 @@ const options = {
                 get: {
                     tags: ['Customers'],
                     summary: 'List customers',
-
+                    parameters: [
+                        {                          
+                            name: 'page',
+                            in: 'query',
+                            description: 'Page Number',
+                            required: true,
+                            default:0,
+                            schema: {
+                              type: 'number',                                                
+                            }
+                        },
+                        
+                    ],
                     responses:{
                         200:{
                             description:"Sucesso",                         
