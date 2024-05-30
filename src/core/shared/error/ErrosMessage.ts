@@ -1,0 +1,7 @@
+const ErrosMessage = {
+  USUARIO_JA_EXISTE: 'USER ALREADY EXISTS',
+  PRODUTO_JA_EXISTE: 'PRODUCT ALREADY EXISTS',
+  PRODUTO_NAO_LOCALIZADO: 'PRODUCT NOT EXISTS',
+} as const
+
+export default ErrosMessage
