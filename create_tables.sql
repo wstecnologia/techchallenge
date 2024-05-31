@@ -16,3 +16,14 @@ CREATE TABLE Category (
   name VARCHAR(255),
   description VARCHAR(255)
 );
+
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE TABLE Product (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),	
+  name VARCHAR(255),
+  description VARCHAR(255),
+  price NUMERIC,
+  categoryId VARCHAR(255)
+  image VARCHAR(255)
+);  

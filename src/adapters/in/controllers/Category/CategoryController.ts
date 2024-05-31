@@ -8,25 +8,26 @@ const categoryRepository = new CategoryRepository()
 const categoryUseCase = new CategoryUseCase(categoryRepository)
 
 export default class CategoryController implements ICategoryRepository {
-  async save(category: Category): Promise<{ message: string }> {
+  async save(category: Category): Promise<void> {
+    await categoryUseCase.save(category)
+  }
+  async findById(categoryId: string): Promise<Category> {
     try {
-      await categoryUseCase.save(category)
-      return { message: 'Category created successfully' }
+      const category: Category = await categoryUseCase.findById(categoryId)
+      if (category === null) return
+      return category
     } catch (error) {
-      return { message: 'Error creating category' }
+      throw new Error('Could not save category')
     }
   }
 
-  async findById(categoryId: string): Promise<Category | { message: string }> {
+  public async listAll(): Promise<Category[]> {
     try {
-      const category = await categoryUseCase.findById(categoryId)
-      if (category) {
-        return new Category(category.id, category.name, category.description)
-      } else {
-        return { message: 'Category not found' }
-      }
+      const categories: Category[] = await categoryUseCase.listAll()
+      return categories
     } catch (error) {
-      return { message: 'Error fetching category' }
+      console.error('Error listing all categories:', error)
+      throw new Error('Could not list categories')
     }
   }
 }

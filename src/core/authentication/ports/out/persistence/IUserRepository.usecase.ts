@@ -1,6 +1,6 @@
 import { User } from '@/core/authentication/domain/entities/User'
 
 export interface IUserRepository {
-  save(user: User): void
-  findByEmail(email: string): User | null
+  save(user: User): Promise<void>
+  findByEmail(email: string): Promise<User | null>
 }

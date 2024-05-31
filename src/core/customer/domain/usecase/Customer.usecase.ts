@@ -1,6 +1,6 @@
 import Id from '@/core/shared/Id'
 import Customer from '../entities/Customer'
-import ErrosMessage from '@/core/shared/ErrosMessage'
+import ErrosMessage from '@/core/shared/error/ErrosMessage'
 import ICustomerRepository from '../../ports/out/CustomerRepository'
 
 export default class CustomerUseCase {
@@ -13,22 +13,21 @@ export default class CustomerUseCase {
     }
 
     const newCustomer = new Customer(
-      Id.gerar(), 
-      newCustomers.name, 
-      newCustomers.email, 
-      newCustomers.cpf
+      Id.gerar(),
+      newCustomers.name,
+      newCustomers.email,
+      newCustomers.cpf,
     )
- 
+
     await this.customerRepository.save(newCustomer)
     return newCustomer
-    
   }
 
-  async listAllCustomers(): Promise<Customer[]>{
-    return await this.customerRepository.listAll()    
+  async listAllCustomers(): Promise<Customer[]> {
+    return await this.customerRepository.listAll()
   }
 
-  async getCustomerCpf(cpf:string): Promise<Customer|null>{
+  async getCustomerCpf(cpf: string): Promise<Customer | null> {
     return await this.customerRepository.findByCpf(cpf)
   }
 }

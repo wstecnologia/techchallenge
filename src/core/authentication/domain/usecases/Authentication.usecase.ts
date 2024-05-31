@@ -13,6 +13,7 @@ export class AuthenticationUseCase implements IRegisterUserUseCase, IAuthenticat
 
   public authenticate(email: string, password: string): User | null {
     const user = this.userRepository.findByEmail(email)
-    return user && user.password === password ? user : null
+    //return user && user.password === password ? user : null
+    return null
   }
 }

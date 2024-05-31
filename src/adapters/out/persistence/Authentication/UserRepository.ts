@@ -9,7 +9,6 @@ export class UserRepository implements IUserRepository {
   constructor() {
     this.pool = db
   }
-
   public async save(user: User): Promise<void> {
     const query = 'INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4)'
     const values = [user.id, user.name, user.email, user.password]

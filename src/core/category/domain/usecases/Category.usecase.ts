@@ -1,14 +1,16 @@
-import db from '@/adapters/out/persistence/DB/db'
-import ICategoryUseCase from '../../ports/in/ICategoryUseCase'
+import ICategorysitoryUseCase from '../../ports/out/ICategoryRepository'
 import Category from '../entities/Category'
 
 export default class CategoryUseCase {
-  constructor(private categoryController: ICategoryUseCase) {}
+  constructor(private categoryRepository: ICategorysitoryUseCase) {}
   async findById(id: any) {
-    return this.categoryController.findById(id)
+    return this.categoryRepository.findById(id)
+  }
+  async save(category: Category) {
+    this.categoryRepository.save(category)
   }
 
-  async save(category: Category) {
-    this.categoryController.save(category)
+  async listAll() {
+    return this.categoryRepository.listAll()
   }
 }

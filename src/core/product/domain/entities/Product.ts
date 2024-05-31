@@ -1,9 +1,10 @@
 export default class Product {
   constructor(
     public id: string,
-    public customerId: string,
-    public amount: number,
-    public status: string,
-    public category: string,
+    public name: string,
+    public description: string,
+    public price: number,
+    public categoryId: string,
+    public image: string,
   ) {}
 }
