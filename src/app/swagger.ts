@@ -93,69 +93,254 @@ const options = {
               description: 'Invalid Access',
             },
 
-                    500:{
-                        description: 'Internal Server Error',
-                    }
-                }
-                },
-                get: {
-                    tags: ['Customers'],
-                    summary: 'List customers',
-
-                    responses:{
-                        200:{
-                            description:"Sucesso",
-                        },
-                        400:{
-                            description: 'Requisição inválida',
-                        },
-                        401:{
-                            description: 'Acesso inválido',
-                        },
-                        404:{
-                            description:'Clientes não encontrado',
-                        },
-                        500:{
-                            description: 'Erro interno do servidor',
-                        }
-                    }
-                },
+            500: {
+              description: 'Internal Server Error',
             },
-            '/api/customers/cpf':{
-                get:{
-                    tags: ['Customers'],
-                    summary: 'Consult customer by CPF',
-                    parameters: [
-                        {
-                            name: 'cpf',
-                            in: 'query',
-                            description: 'Cpf Number',
-                            required: true,
-                            schema: {
-                              type: 'string',
-                            }
-                        },
-
-                    ],
-                    responses:{
-                        200:{
-                            description:"Success",
-                        },
-                        400:{
-                            description: 'Invalid Request',
-                        },
-                        401:{
-                            description: 'Invalid Access',
-                        },
-                        404:{
-                            description:"Products not found",
-                        },
-                        500:{
-                            description: 'Internal Server Error',
-                        }
-                    }
-                }
+          },
+        },
+        get: {
+          tags: ['Customers'],
+          summary: 'List customers',
+          responses: {
+            200: {
+              description: 'Sucesso',
             },
+            400: {
+              description: 'Requisição inválida',
+            },
+            401: {
+              description: 'Acesso inválido',
+            },
+            404: {
+              description: 'Clientes não encontrado',
+            },
+            500: {
+              description: 'Erro interno do servidor',
+            },
+          },
+        },
+      },
+      '/api/customers/cpf': {
+        get: {
+          tags: ['Customers'],
+          summary: 'Consult customer by CPF',
+          parameters: [
+            {
+              name: 'cpf',
+              in: 'query',
+              description: 'Cpf Number',
+              required: true,
+              schema: {
+                type: 'string',
+              },
+            },
+          ],
+          responses: {
+            200: {
+              description: 'Success',
+            },
+            400: {
+              description: 'Invalid Request',
+            },
+            401: {
+              description: 'Invalid Access',
+            },
+            404: {
+              description: 'Products not found',
+            },
+            500: {
+              description: 'Internal Server Error',
+            },
+          },
+        },
+      },
+
+      '/api/categories': {
+        post: {
+          tags: ['Categories'],
+          summary: 'Register Category',
+          requestBody: {
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    name: {
+                      type: 'string',
+                      example: 'Nome da categoria',
+                    },
+                    description: {
+                      type: 'string',
+                      example: 'Descrição da categoria',
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            201: {
+              description: 'Created',
+            },
+            200: {
+              description: 'Success',
+            },
+            400: {
+              description: 'Invalid Request',
+            },
+            401: {
+              description: 'Invalid Access',
+            },
+            500: {
+              description: 'Internal Server Error',
+            },
+          },
+        },
+        get: {
+          tags: ['Categories'],
+          summary: 'List All Categories',
+          parameters: [
+            {
+              name: 'page',
+              in: 'query',
+              description: 'Page Number',
+              required: true,
+              default: 0,
+              schema: {
+                type: 'number',
+              },
+            },
+          ],
+          responses: {
+            200: {
+              description: 'Success',
+            },
+            400: {
+              description: 'Invalid Request',
+            },
+            401: {
+              description: 'Invalid Access',
+            },
+            404: {
+              description: 'Categories not found',
+            },
+            500: {
+              description: 'Internal Server Error',
+            },
+          },
+        },
+        put: {
+          tags: ['Categories'],
+          summary: 'Edit Category',
+          requestBody: {
+            content: {
+              'application/json': {
+                schema: {
+                  properties: {
+                    id: {
+                      type: 'number',
+                      example: 12345,
+                    },
+                    name: {
+                      type: 'string',
+                      example: 'Nome da categoria',
+                    },
+                    description: {
+                      type: 'string',
+                      example: 'Descrição da categoria',
+                    },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            200: {
+              description: 'Success',
+            },
+            400: {
+              description: 'Invalid Request',
+            },
+            401: {
+              description: 'Invalid Access',
+            },
+            404: {
+              description: 'Category not found',
+            },
+            500: {
+              description: 'Internal Server Error',
+            },
+          },
+        },
+        delete: {
+          tags: ['Categories'],
+          summary: 'Delete Category',
+          parameters: [
+            {
+              name: 'id',
+              in: 'query',
+              description: 'Category Code',
+              required: true,
+              schema: {
+                type: 'number',
+              },
+            },
+          ],
+          responses: {
+            200: {
+              description: 'Sucesso',
+            },
+            400: {
+              description: 'Requisição inválida',
+            },
+            401: {
+              description: 'Acesso inválido',
+            },
+            404: {
+              description: 'Categoria não encontrada',
+            },
+            500: {
+              description: 'Erro interno do servidor',
+            },
+          },
+        },
+      },
+
+      '/api/categories/id': {
+        get: {
+          tags: ['Categories'],
+          summary: 'List Category by Id',
+          parameters: [
+            {
+              name: 'id',
+              in: 'query',
+              description: 'Id',
+              required: true,
+              default: 0,
+              schema: {
+                type: 'string',
+              },
+            },
+          ],
+          responses: {
+            200: {
+              description: 'Success',
+            },
+            400: {
+              description: 'Invalid Request',
+            },
+            401: {
+              description: 'Invalid Access',
+            },
+            404: {
+              description: 'Category not found',
+            },
+            500: {
+              description: 'Internal Server Error',
+            },
+          },
+        },
+      },
 
       '/api/products': {
         post: {
@@ -177,15 +362,16 @@ const options = {
                     },
                     categoryId: {
                       type: 'string',
-                      example: 'Nome do produto',
+                      enum: ['Lanche', 'Acompanhamento', 'Bebida', 'Sobremesa'],
+                      example: 'Lanche',
                     },
                     price: {
                       type: 'number',
-                      example: 'Preço do produto a ser alterado ',
+                      example: 'Preço do produto a ser alterado',
                     },
                     image: {
                       type: 'number',
-                      example: 'Preço do produto a ser alterado ',
+                      example: 'Preço do produto a ser alterado',
                     },
                   },
                 },
@@ -274,7 +460,7 @@ const options = {
                     },
                     image: {
                       type: 'image',
-                      example: 'Imagem do produto a ser alterado ',
+                      example: 'Imagem do produto a ser alterado',
                     },
                   },
                 },
@@ -336,7 +522,7 @@ const options = {
       '/api/products/id': {
         get: {
           tags: ['Products'],
-          summary: 'List Product by Id ',
+          summary: 'List Product by Id',
           parameters: [
             {
               name: 'id',
@@ -368,6 +554,7 @@ const options = {
           },
         },
       },
+
       '/api/orders/status': {
         get: {
           tags: ['Orders'],
@@ -406,7 +593,7 @@ const options = {
           summary: 'Update order status',
           parameters: [
             {
-              name: 'Orders Code ',
+              name: 'Orders Code',
               in: 'query',
               description: 'Sector Code',
               required: true,

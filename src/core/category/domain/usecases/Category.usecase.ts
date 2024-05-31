@@ -1,13 +1,14 @@
-import ICategorysitoryUseCase from '../../ports/out/ICategoryRepository'
+import ICategoryUseCase from '../../ports/in/ICategoryUseCase'
+
 import Category from '../entities/Category'
 
 export default class CategoryUseCase {
-  constructor(private categoryRepository: ICategorysitoryUseCase) {}
+  constructor(private categoryRepository: ICategoryUseCase) {}
   async findById(id: any) {
     return this.categoryRepository.findById(id)
   }
-  async save(category: Category) {
-    this.categoryRepository.save(category)
+  async registerCategory(category: Category) {
+    this.categoryRepository.registerCategory(category)
   }
 
   async listAll() {

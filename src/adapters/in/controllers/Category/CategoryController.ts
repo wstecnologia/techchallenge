@@ -8,8 +8,8 @@ const categoryRepository = new CategoryRepository()
 const categoryUseCase = new CategoryUseCase(categoryRepository)
 
 export default class CategoryController implements ICategoryRepository {
-  async save(category: Category): Promise<void> {
-    await categoryUseCase.save(category)
+  async registerCategory(category: Category): Promise<void> {
+    await categoryUseCase.registerCategory(category)
   }
   async findById(categoryId: string): Promise<Category> {
     try {

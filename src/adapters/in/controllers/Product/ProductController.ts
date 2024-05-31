@@ -10,8 +10,9 @@ export default class ProductController {
     await productUseCase.registerProduct(product)
   }
 
-  async findById(productId: string): Promise<Product> {
-    return await productUseCase.findById(productId)
+  async findById(productId: string): Promise<Product[]> {
+    const product = await productUseCase.findById(productId)
+    return [product]
   }
 
   async findByCategory(categoryId: string): Promise<Product[]> {

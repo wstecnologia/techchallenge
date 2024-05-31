@@ -11,7 +11,7 @@ export default class CategoryRepository implements ICategoryRepository {
     this.pool = db
   }
 
-  public async save(category: Category): Promise<void> {
+  public async registerCategory(category: Category): Promise<void> {
     try {
       await this.pool.query(
         `INSERT INTO Category (id, name, description)
