@@ -15,11 +15,11 @@ export default class ProductController {
     return [product]
   }
 
-  async findByCategory(categoryId: string): Promise<Product[]> {
-    return await productUseCase.findByCategory(categoryId)
+  async findByCategory(categoryId: string, page: number): Promise<Product[]> {
+    return await productUseCase.findByCategory(categoryId, page)
   }
 
-  async listAll(): Promise<Product[]> {
-    return await productUseCase.listAll()
+  async listAll(page: number): Promise<Product[]> {
+    return await productUseCase.listAll(page)
   }
 }

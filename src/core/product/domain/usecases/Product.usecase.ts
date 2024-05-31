@@ -31,11 +31,11 @@ export default class ProductUseCase {
     return product
   }
 
-  async findByCategory(categoryId: string): Promise<Product[]> {
-    return await this.productRepository.findByCategory(categoryId)
+  async findByCategory(categoryId: string, page: number): Promise<Product[]> {
+    return await this.productRepository.findByCategory(categoryId, page)
   }
 
-  async listAll(): Promise<Product[]> {
-    return await this.productRepository.listAll()
+  async listAll(page: number): Promise<Product[]> {
+    return await this.productRepository.listAll(page)
   }
 }

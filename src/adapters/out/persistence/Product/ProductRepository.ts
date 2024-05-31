@@ -13,8 +13,6 @@ export default class ProductRepository implements IProductRepository {
 
   async registerProduct(product: Product): Promise<void> {
     const productId = Id.gerar()
-    console.log('Registrando produto com ID:', productId) // Log para depuração
-    console.log('Dados do produto:', product) // Log para depuração
     try {
       await this.pool.query(
         `INSERT INTO product (id, name, description, price, categoryid, image)
@@ -44,15 +42,17 @@ export default class ProductRepository implements IProductRepository {
     return result
   }
 
-  async findByCategory(categoryid: string): Promise<Product[]> {
-    const query = 'SELECT * FROM product WHERE categoryid = $1'
+  async findByCategory(categoryid: string, page: number = 0): Promise<Product[]> {
+    const query = `SELECT * FROM product WHERE categoryid = $1 LIMIT 10 OFFSET(${page} * 10)`
     const result = await this.pool.any(query, [categoryid])
     return result
   }
 
-  async listAll(): Promise<Product[]> {
+  async listAll(page: number = 0): Promise<Product[]> {
     try {
-      const products: Product[] = await this.pool.any('SELECT * FROM product')
+      const products: Product[] = await this.pool.any(
+        `SELECT * FROM product LIMIT 10 OFFSET(${page} * 10)`,
+      )
       return products
     } catch (error) {
       throw new Error('Could not list products')

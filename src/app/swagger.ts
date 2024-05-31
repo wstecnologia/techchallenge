@@ -154,7 +154,6 @@ const options = {
           },
         },
       },
-
       '/api/categories': {
         post: {
           tags: ['Categories'],
@@ -316,7 +315,7 @@ const options = {
               in: 'query',
               description: 'Id',
               required: true,
-              default: 0,
+              default: '',
               schema: {
                 type: 'string',
               },

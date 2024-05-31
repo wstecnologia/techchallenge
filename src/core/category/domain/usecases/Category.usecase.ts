@@ -11,7 +11,7 @@ export default class CategoryUseCase {
     this.categoryRepository.registerCategory(category)
   }
 
-  async listAll() {
-    return this.categoryRepository.listAll()
+  async listAll(page: number = 0) {
+    return this.categoryRepository.listAll(page)
   }
 }

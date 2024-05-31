@@ -15,8 +15,6 @@ import ProductController from '@/adapters/in/controllers/Product/ProductControll
 
 const router = Router()
 
-console.log('está na router')
-
 const userRepository = new InMemoryUserRepository()
 const authenticateUserUseCase = new AuthenticationUseCase(userRepository)
 const registerUserUseCase = new RegisterUserUseCase(authenticateUserUseCase)
@@ -107,11 +105,12 @@ router.post('/products', (request: Request, response: Response) => {
 })
 
 router.get('/products/category', async (request: Request, response: Response) => {
+  const { page } = request.query
   const { category } = request.query
 
   let products: Object[] = []
 
-  products = await productController.findByCategory(category.toString())
+  products = await productController.findByCategory(category.toString(), Number(page))
 
   response.status(200).json({ message: 'Produto cadastrado com sucesso' })
 })
@@ -125,9 +124,10 @@ router.get('/products/id', async (request: Request, response: Response) => {
 })
 
 router.get('/products/all', async (request: Request, response: Response) => {
+  const { page } = request.query
   let products: Object[] = []
 
-  products = await productController.listAll()
+  products = await productController.listAll(Number(page))
   response.status(200).json(products)
 })
 
@@ -135,6 +135,29 @@ router.delete('/products', (request: Request, response: Response) => {
   response.status(200).json({ message: 'Produto excluído com sucesso' })
 })
 
+//**Category */
+router.post('/categories', (request: Request, response: Response) => {
+  const category = categoryController.registerCategory(request.body)
+  response.status(200).json(category)
+})
+
+router.get('/categories/id', async (request: Request, response: Response) => {
+  const { id } = request.query
+  const categories = await categoryController.findById(id.toString())
+  response.status(200).json(categories)
+})
+
+router.get('/categories', async (request: Request, response: Response) => {
+  const { page } = request.query
+  let categories: Object[] = []
+
+  categories = await categoryController.listAll(Number(page))
+  response.status(200).json(categories)
+})
+
+router.delete('/categories', (request: Request, response: Response) => {
+  response.status(200).json({ message: 'Categoria excluída com sucesso' })
+})
 //**Orders */
 router.post('/new-order', (request: Request, response: Response) =>
   response.send({ message: 'Pedido criado com sucesso' }),

@@ -21,9 +21,9 @@ export default class CategoryController implements ICategoryRepository {
     }
   }
 
-  public async listAll(): Promise<Category[]> {
+  public async listAll(page: number): Promise<Category[]> {
     try {
-      const categories: Category[] = await categoryUseCase.listAll()
+      const categories: Category[] = await categoryUseCase.listAll(page)
       return categories
     } catch (error) {
       console.error('Error listing all categories:', error)
