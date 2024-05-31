@@ -93,68 +93,69 @@ const options = {
               description: 'Invalid Access',
             },
 
-            500: {
-              description: 'Internal Server Error',
-            },
-          },
-        },
-        get: {
-          tags: ['Customers'],
-          summary: 'List customers',
+                    500:{
+                        description: 'Internal Server Error',
+                    }
+                }
+                },
+                get: {
+                    tags: ['Customers'],
+                    summary: 'List customers',
 
-          responses: {
-            200: {
-              description: 'Sucesso',
+                    responses:{
+                        200:{
+                            description:"Sucesso",
+                        },
+                        400:{
+                            description: 'Requisição inválida',
+                        },
+                        401:{
+                            description: 'Acesso inválido',
+                        },
+                        404:{
+                            description:'Clientes não encontrado',
+                        },
+                        500:{
+                            description: 'Erro interno do servidor',
+                        }
+                    }
+                },
             },
-            400: {
-              description: 'Requisição inválida',
+            '/api/customers/cpf':{
+                get:{
+                    tags: ['Customers'],
+                    summary: 'Consult customer by CPF',
+                    parameters: [
+                        {
+                            name: 'cpf',
+                            in: 'query',
+                            description: 'Cpf Number',
+                            required: true,
+                            schema: {
+                              type: 'string',
+                            }
+                        },
+
+                    ],
+                    responses:{
+                        200:{
+                            description:"Success",
+                        },
+                        400:{
+                            description: 'Invalid Request',
+                        },
+                        401:{
+                            description: 'Invalid Access',
+                        },
+                        404:{
+                            description:"Products not found",
+                        },
+                        500:{
+                            description: 'Internal Server Error',
+                        }
+                    }
+                }
             },
-            401: {
-              description: 'Acesso inválido',
-            },
-            404: {
-              description: 'Clientes não encontrado',
-            },
-            500: {
-              description: 'Erro interno do servidor',
-            },
-          },
-        },
-      },
-      '/api/customers/cpf': {
-        get: {
-          tags: ['Customers'],
-          summary: 'Consult customer by CPF',
-          parameters: [
-            {
-              name: 'cpf',
-              in: 'query',
-              description: 'Cpf Number',
-              required: true,
-              schema: {
-                type: 'string',
-              },
-            },
-          ],
-          responses: {
-            200: {
-              description: 'Success',
-            },
-            400: {
-              description: 'Invalid Request',
-            },
-            401: {
-              description: 'Invalid Access',
-            },
-            404: {
-              description: 'Products not found',
-            },
-            500: {
-              description: 'Internal Server Error',
-            },
-          },
-        },
-      },
 
       '/api/products': {
         post: {

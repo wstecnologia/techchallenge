@@ -13,22 +13,33 @@ export default class CustomerRepository implements ICustomerRepository {
     return usuario
   }
 
-  async listAll(): Promise<Customer[]|null> {
+  async listAll(page:number=0): Promise<Customer[]|null> {
 
     const usuario:Customer[] = await db.any(
-        `select * from customers`
+        `select * from customers 
+        LIMIT 10 
+        OFFSET(${page} * 10)`
     )
 
-    if (usuario.length === 0 ) return null       
+    if (usuario.length === 0 ) return null
+    
     return usuario 
   }  
+
+  async countCustomers():Promise<number> {
+    const qtde = await db.oneOrNone(`select count(*) total from customers`)
+    if (!qtde) return 0
+
+    return qtde.total
+  }
 
   async findByEmail(email: string): Promise<Customer | null> {
     const usuario = await db.oneOrNone(
             `select * from customers where email = $1`,
             [email]
         )
-        if (!usuario) return null       
+    
+    if (!usuario) return null
     return usuario
   }
 

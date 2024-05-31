@@ -3,24 +3,24 @@ import { InMemoryUserRepository } from '@/adapters/out/persistence/Authenticatio
 import { RegisterUserUseCase } from '@/core/authentication/domain/usecases/RegisterUser.usecase'
 import { AuthenticationUseCase } from '@/core/authentication/domain/usecases/Authentication.usecase'
 import { AuthenticationController } from '@/adapters/in/controllers/Authentication/AuthenticationController'
-import { dbUserRepository } from '@/adapters/out/persistence/Authentication/dbUserRepository'
 import CustomerController from '@/adapters/in/controllers/Customer/CustomerController'
 import CustomerUseCase from '@/core/customer/domain/usecase/Customer.usecase'
+import CustomerRepository from '@/adapters/out/persistence/Customer/CustomerRepository'
 
 const router = Router()
 
 const userRepository = new InMemoryUserRepository()
 const authenticateUserUseCase = new AuthenticationUseCase(userRepository)
 const registerUserUseCase = new RegisterUserUseCase(authenticateUserUseCase)
-const repositorioUsuario = new dbUserRepository()
+const repositorioUsuario = new (CustomerRepository)
 const customerUserCase = new CustomerUseCase(repositorioUsuario)
+const registrarusuariocontroller = new CustomerController(customerUserCase)
 
 const authController = new AuthenticationController(registerUserUseCase, authenticateUserUseCase)
 
 router.post('/register', (request: Request, response: Response) =>
   authController.register(request, response),
 )
-
 router.post('/login', (request: Request, response: Response) =>
   authController.login(request, response),
 )
@@ -28,12 +28,12 @@ router.post('/login', (request: Request, response: Response) =>
 // TechChalleger
 
 router.post('/auth', (request: Request, response: Response) => {
-  const { tipo_autenticacao, name, email, cpf } = request.body
+    const {tipo_autenticacao,name,email,cpf} = request.body
 
-  console.log(tipo_autenticacao, name, email, cpf)
-  authController.register(request, response),
+    console.log(tipo_autenticacao, name, email, cpf)
+    authController.register(request, response),
     response.status(200).json({ message: 'Cliente autenticado com sucesso' })
-  /*switch (tipo_autenticacao) {
+    /*switch (tipo_autenticacao) {
       case 0:
         response.status(200).json({ message: 'Cliente autenticado com sucesso' })
       case 1:
@@ -49,22 +49,26 @@ router.post('/auth', (request: Request, response: Response) => {
       default:
         response.status(401).json({message: "Selecione um metodo de autenticação valido"})
     }*/
-})
+
+  }  
+)
 
 //**Customers */
 router.post('/customers', (request: Request, response: Response) => {
-  const registrarusuariocontroller = new CustomerController(customerUserCase)
+  try {  
+    const user = registrarusuariocontroller.register(request.body)
 
-  const user = registrarusuariocontroller.register(request.body)
-
-  response.status(200).json(user)
+    response.status(200).json(user)
+  } catch (error) {
+    response.status(400).json({ message: error.message })
+  }
 })
 
 router.get('/customers', async(request: Request, response: Response) => {
   try {
-    const registrarusuariocontroller = new CustomerController(customerUserCase)
-    const lstCustomers = await registrarusuariocontroller.listAll()
-    response.status(200).json(lstCustomers)
+    const { page } = request.query
+    const lstCustomers = await registrarusuariocontroller.listAll(Number(page))
+    response.status(200).json(lstCustomers)  
   } catch (error) {
     response.status(400).json({ message: error.message })
   }
@@ -74,33 +78,16 @@ router.get('/customers', async(request: Request, response: Response) => {
 router.get('/customers/cpf', async(request: Request, response: Response) => {
   try {
     const { cpf } = request.query
-
+    
     const registrarusuariocontroller = new CustomerController(customerUserCase)
-    const customer = await registrarusuariocontroller.getCustomerCpf(cpf)
-    response.status(200).json(customer)
+    const customer = await registrarusuariocontroller.getCustomerCpf(cpf.toString())
+    response.status(200).json(customer)  
   } catch (error) {
     response.status(400).json({ message: error.message })
   }
 
 })
 
-//**Categories */
-router.post('/categories', async (request: Request, response: Response) => {
-  const { name, description } = request.body
-
-  const categoryController = new CategoryController()
-  try {
-    const result = await categoryController.save({ name, description })
-
-    if (result.message === 'Category created successfully') {
-      response.status(201).json(result)
-    } else {
-      response.status(400).json(result)
-    }
-  } catch (error) {
-    response.status(500).json({ message: 'Internal server error' })
-  }
-})
 
 //**Products */
 router.post('/products', (request: Request, response: Response) => {
