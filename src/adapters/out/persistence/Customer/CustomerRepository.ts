@@ -4,7 +4,7 @@ import ICustomerRepository from '@/core/customer/ports/out/CustomerRepository'
 
 export default class CustomerRepository implements ICustomerRepository {
 
-  async findByCpf(cpf: string): Promise<Customer> {
+  async findByCpf(cpf: string): Promise<Customer | null> {
     const usuario = await db.oneOrNone(
         `select * from customers where cpf = $1`,
         [cpf]
@@ -17,7 +17,7 @@ export default class CustomerRepository implements ICustomerRepository {
 
     const usuario:Customer[] = await db.any(
         `select * from customers 
-        LIMIT 10 
+          LIMIT 10 
         OFFSET(${page} * 10)`
     )
 
@@ -45,7 +45,7 @@ export default class CustomerRepository implements ICustomerRepository {
 
   async save(customer: Customer): Promise<void> {
     await db.query(
-      `insert into customers (id, nome, email, senha)
+      `insert into customers (id, name, email, cpf)
       values ($1, $2, $3, $4)`,
       [customer.id, customer.name, customer.email, customer.cpf],
     )

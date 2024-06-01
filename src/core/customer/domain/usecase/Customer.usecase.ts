@@ -4,14 +4,15 @@ import ErrosMessage from '@/core/shared/error/ErrosMessage'
 import ICustomerRepository from '../../ports/out/CustomerRepository'
 import Pagination from '@/core/shared/pagination/Pagination'
 import PageResponse from '@/core/shared/pagination/PageResponse'
+import AppErros from '@/core/shared/error/AppErros'
 
 export default class CustomerUseCase {
   constructor(private customerRepository: ICustomerRepository) {}
 
   async registerCustomer(newCustomers: Customer): Promise<Customer> {
-    const existingCustomer = await this.customerRepository.findByEmail(newCustomers.email)
+    const existingCustomer = await this.customerRepository.findByCpf(newCustomers.cpf)
     if (existingCustomer) {
-      throw new Error(ErrosMessage.USUARIO_JA_EXISTE)
+      throw new AppErros(ErrosMessage.USUARIO_JA_EXISTE)
     }
 
     const newCustomer = new Customer(
@@ -43,6 +44,9 @@ export default class CustomerUseCase {
   }
 
   async getCustomerCpf(cpf: string): Promise<Customer | null> {
-    return await this.customerRepository.findByCpf(cpf)
+    const returnValidation =  await this.customerRepository.findByCpf(cpf)
+    if(!returnValidation) throw new AppErros(ErrosMessage.USUARIO_NAO_LOCALIZADO,401)
+          
+    return returnValidation
   }
 }
