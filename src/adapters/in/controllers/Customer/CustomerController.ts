@@ -1,7 +1,6 @@
 import CustomerUseCase from '@/core/customer/domain/usecase/Customer.usecase'
-import CustomerRepository from '@/adapters/out/persistence/Customer/CustomerRepository'
 import Customer from '@/core/customer/domain/entities/Customer'
-import { error } from 'console'
+
 
 export default class CustomerController {
   constructor(
