@@ -6,8 +6,8 @@ import bodyParser  from 'body-parser'
 import { routes } from './Routes'
 
 import swaggerUi from 'swagger-ui-express'
-import swaggerSpec from './swagger'
 import { allRoutes } from './routes/index'
+import swaggerSpec from './swagger/SwaggerSpec'
 
 const app = express()
 

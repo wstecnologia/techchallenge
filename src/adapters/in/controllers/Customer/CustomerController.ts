@@ -1,5 +1,6 @@
 import CustomerUseCase from '@/core/customer/domain/usecase/Customer.usecase'
 import Customer from '@/core/customer/domain/entities/Customer'
+import AppErros from '@/core/shared/error/AppErros'
 
 
 export default class CustomerController {
@@ -19,11 +20,11 @@ export default class CustomerController {
 
   async getCustomerCpf(cpf:string){
     if(cpf.length !== 11){
-      throw new Error("O número de cpf deve conter 11 digitos")
+      throw new AppErros("O número de cpf deve conter 11 digitos")
     }
     
     if(!cpf.toString().trim()){
-      throw new Error("Informe um número valido")      
+      throw new AppErros("Informe um número valido")      
     }
 
     return await this.customerUseCase.getCustomerCpf(cpf)
