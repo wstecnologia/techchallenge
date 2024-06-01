@@ -2,7 +2,7 @@ create extension if not exists "uuid-ossp";
 
 create table IF NOT EXISTS Customers (
 	id uuid primary key NOT NULL,
-	nome varchar(255) not null,
+	name varchar(255) not null,
 	email varchar(255) null,
 	cpf varchar(11) not null,
   active boolean DEFAULT true
