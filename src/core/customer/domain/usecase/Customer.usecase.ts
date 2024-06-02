@@ -2,6 +2,8 @@ import Id from '@/core/shared/Id'
 import Customer from '../entities/Customer'
 import ErrosMessage from '@/core/shared/error/ErrosMessage'
 import ICustomerRepository from '../../ports/out/CustomerRepository'
+import Pagination from '@/core/shared/pagination/Pagination'
+import PageResponse from '@/core/shared/pagination/PageResponse'
 
 export default class CustomerUseCase {
   constructor(private customerRepository: ICustomerRepository) {}
@@ -23,8 +25,21 @@ export default class CustomerUseCase {
     return newCustomer
   }
 
-  async listAllCustomers(): Promise<Customer[]> {
-    return await this.customerRepository.listAll()
+  async listAllCustomers(page:number): Promise<PageResponse<Customer>>{
+    const customers = await this.customerRepository.listAll(page)
+    const totalCustomers:number = await this.customerRepository.countCustomers()
+    const totalPages = Math.ceil(totalCustomers / 10);
+
+    const pagination: Pagination = {
+      currentPage:page,
+      totalPage:totalPages,
+      totalItems:Number(totalCustomers),
+      itemsPerPage:10
+    }
+    return {
+      items:customers,
+      pagination,
+    }
   }
 
   async getCustomerCpf(cpf: string): Promise<Customer | null> {

@@ -1,4 +1,3 @@
-import ICategorysitoryUseCase from '@/core/category/ports/out/ICategoryRepository'
 import Category from '@/core/category/domain/entities/Category'
 import CategoryUseCase from '@/core/category/domain/usecases/Category.usecase'
 import CategoryRepository from '@/adapters/out/persistence/Category/CategoryRepository'
@@ -14,7 +13,6 @@ export default class CategoryController implements ICategoryRepository {
   async findById(categoryId: string): Promise<Category> {
     try {
       const category: Category = await categoryUseCase.findById(categoryId)
-      if (category === null) return
       return category
     } catch (error) {
       throw new Error('Could not save category')

@@ -1,6 +1,6 @@
+import db from '@/adapters/out/persistence/DB/db'
 import Customer from '@/core/customer/domain/entities/Customer'
 import ICustomerRepository from '@/core/customer/ports/out/CustomerRepository'
-import db from '../DB/db'
 
 export default class CustomerRepository implements ICustomerRepository {
 
