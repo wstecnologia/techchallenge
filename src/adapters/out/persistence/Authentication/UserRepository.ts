@@ -11,7 +11,7 @@ export class UserRepository implements IUserRepository {
   }
   public async save(user: User): Promise<void> {
     const query = 'INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4)'
-    const values = [user.id, user.name, user.email, user.password]
+    const values = [user.id, user.name, user.email]
     await this.pool.none(query, values)
   }
 
@@ -27,7 +27,7 @@ export class UserRepository implements IUserRepository {
       name: result.name,
       email: result.email,
       cpf: result.cpf,
-      password: result.password,
+      //password: result.password,
     }
     return user
   }

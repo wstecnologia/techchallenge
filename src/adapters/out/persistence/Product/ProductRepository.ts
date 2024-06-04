@@ -26,11 +26,16 @@ export default class ProductRepository implements IProductRepository {
           product.image,
         ],
       )
-      console.log('Produto registrado com sucesso') // Log para depuração
     } catch (err) {
-      console.error('Erro ao cadastrar produto:', err) // Log para depuração
       throw new Error(`Erro ao cadastrar produto: ${err}`)
     }
+  }
+
+  async countProducts(): Promise<number> {
+    const qtde = await db.oneOrNone(`select count(*) total from products`)
+    if (!qtde) return 0
+
+    return qtde.total
   }
 
   async findById(productId: string): Promise<Product> {
@@ -58,4 +63,8 @@ export default class ProductRepository implements IProductRepository {
       throw new Error('Could not list products')
     }
   }
+
+  // listAllProducts(page: number): Promise<Product[]> {
+  //   throw new Error('Method not implemented.')
+  // }
 }

@@ -11,14 +11,15 @@ export class AuthenticationController {
 
   public register(req: Request, res: Response): void {
     const { id, name, email, cpf, password } = req.body
-    const user = new User(id, name, email, cpf, password)
+    //const user = new User(id, name, email, cpf, password)
+    const user = new User(id, name, email, cpf)
     const registeredUser = this.registerUserUseCase.execute(user)
     res.json(registeredUser)
   }
 
   public login(req: Request, res: Response): void {
     const { email, password } = req.body
-    const user = this.authenticationUseCase.authenticate(email, password)
+    const user = null //this.authenticationUseCase.authenticate(email, password)
     if (user) {
       res.json(user)
     } else {

@@ -1,5 +1,5 @@
 export const productPath = {
-'/api/products': {
+  '/api/products': {
     post: {
       tags: ['Products'],
       summary: 'Register Product',
@@ -48,123 +48,132 @@ export const productPath = {
           description: 'Invalid Access',
         },
 
-                500:{
-                    description: 'Internal Server Error',
-                }
-            }
+        500: {
+          description: 'Internal Server Error',
+        },
+      },
     },
     get: {
-        tags: ['Products'],
-        summary: 'List All Products',
-
-        responses:{
-            200:{
-                description:"Success",                         
-            },
-            400:{
-                description: 'Invalid Request',
-            },
-            401:{
-                description: 'Invalid Access',
-            },
-            404:{
-                description:"Products not found",
-            },
-            500:{
-                description: 'Internal Server Error',
-            }
-        }
-    },
-    put:{
-        tags: ['Products'],
-        summary: 'Edit Product',                    
-        requestBody:{
-            content:{
-                
-                'application/json':{
-                    schema:{
-                        properties:{
-                            id:{
-                                type:'number',
-                                example:12345
-                            },
-                            name:{
-                                type:'string',
-                                example:"Nome do produto"
-                            },
-                            description:{
-                                type:'string',
-                                example:"Descrição do produto"
-                            }, 
-                            category:{
-                                type:'string',
-                                example:"Categoria do produto"
-                            },                                                               
-                            price:{
-                                type:'number',
-                                example:0.00                                       
-                            },
-                            image:{
-                                type:'image',
-                                example:'Imagem do produto a ser alterado '                                        
-                            },   
-                        }
-                    }
-                }
-            }
+      tags: ['Products'],
+      summary: 'List All Products',
+      parameters: [
+        {
+          name: 'page',
+          in: 'query',
+          description: 'Page Number',
+          required: true,
+          default: 0,
+          schema: {
+            type: 'number',
+          },
         },
-        responses:{
-            200:{
-                description:"Success",                         
-            },
-            400:{
-                description: 'Invalid Request',
-            },
-            401:{
-                description: 'Invalid Access',
-            },
-            404:{
-                description: 'Product not found'
-            },
-            500:{
-                description: 'Internal Server Error',
-            }
-
-        }
+      ],
+      responses: {
+        200: {
+          description: 'Success',
+        },
+        400: {
+          description: 'Invalid Request',
+        },
+        401: {
+          description: 'Invalid Access',
+        },
+        404: {
+          description: 'Products not found',
+        },
+        500: {
+          description: 'Internal Server Error',
+        },
+      },
     },
-    delete:{
-        tags: ['Products'],
-        summary: 'Delete Product',
-        parameters: [
-            {                          
-              name: 'id',
-              in: 'query',
-              description: 'Product Code',
-              required: true,
-              schema: {
-                type: 'number',                                                
-              }
-            }
-        ],
-        responses:{
-            200:{
-                description:"Sucesso",                         
+    put: {
+      tags: ['Products'],
+      summary: 'Edit Product',
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {
+              properties: {
+                id: {
+                  type: 'number',
+                  example: 12345,
+                },
+                name: {
+                  type: 'string',
+                  example: 'Nome do produto',
+                },
+                description: {
+                  type: 'string',
+                  example: 'Descrição do produto',
+                },
+                category: {
+                  type: 'string',
+                  example: 'Categoria do produto',
+                },
+                price: {
+                  type: 'number',
+                  example: 0.0,
+                },
+                image: {
+                  type: 'image',
+                  example: 'Imagem do produto a ser alterado ',
+                },
+              },
             },
-            400:{
-                description: 'Requisição inválida',
-            },
-            401:{
-                description: 'Acesso inválido',
-            },
-            404:{
-                description:'Produto não encontrado',
-            },
-            500:{
-                description: 'Erro interno do servidor',
-            }
-        }
-    }
-  },  
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: 'Success',
+        },
+        400: {
+          description: 'Invalid Request',
+        },
+        401: {
+          description: 'Invalid Access',
+        },
+        404: {
+          description: 'Product not found',
+        },
+        500: {
+          description: 'Internal Server Error',
+        },
+      },
+    },
+    delete: {
+      tags: ['Products'],
+      summary: 'Delete Product',
+      parameters: [
+        {
+          name: 'id',
+          in: 'query',
+          description: 'Product Code',
+          required: true,
+          schema: {
+            type: 'number',
+          },
+        },
+      ],
+      responses: {
+        200: {
+          description: 'Sucesso',
+        },
+        400: {
+          description: 'Requisição inválida',
+        },
+        401: {
+          description: 'Acesso inválido',
+        },
+        404: {
+          description: 'Produto não encontrado',
+        },
+        500: {
+          description: 'Erro interno do servidor',
+        },
+      },
+    },
+  },
   '/api/products/id': {
     get: {
       tags: ['Products'],
@@ -199,5 +208,5 @@ export const productPath = {
         },
       },
     },
-  },  
+  },
 }

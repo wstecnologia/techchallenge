@@ -3,30 +3,23 @@ import Customer from '@/core/customer/domain/entities/Customer'
 import ICustomerRepository from '@/core/customer/ports/out/CustomerRepository'
 
 export default class CustomerRepository implements ICustomerRepository {
-
   async findByCpf(cpf: string): Promise<Customer | null> {
-    const usuario = await db.oneOrNone(
-        `select * from customers where cpf = $1`,
-        [cpf]
-    )
-    if (!usuario) return null       
+    const usuario = await db.oneOrNone(`select * from customers where cpf = $1`, [cpf])
+    if (!usuario) return null
     return usuario
   }
 
-  async listAll(page:number=0): Promise<Customer[]|null> {
-
-    const usuario:Customer[] = await db.any(
-        `select * from customers 
-          LIMIT 10 
-        OFFSET(${page} * 10)`
+  async listAll(page: number = 0): Promise<Customer[] | null> {
+    const usuario: Customer[] = await db.any(
+      `select * from customers LIMIT 10 OFFSET(${page} * 10)`,
     )
 
-    if (usuario.length === 0 ) return null
-    
-    return usuario 
-  }  
+    if (usuario.length === 0) return null
 
-  async countCustomers():Promise<number> {
+    return usuario
+  }
+
+  async countCustomers(): Promise<number> {
     const qtde = await db.oneOrNone(`select count(*) total from customers`)
     if (!qtde) return 0
 
@@ -34,11 +27,8 @@ export default class CustomerRepository implements ICustomerRepository {
   }
 
   async findByEmail(email: string): Promise<Customer | null> {
-    const usuario = await db.oneOrNone(
-            `select * from customers where email = $1`,
-            [email]
-        )
-    
+    const usuario = await db.oneOrNone(`select * from customers where email = $1`, [email])
+
     if (!usuario) return null
     return usuario
   }

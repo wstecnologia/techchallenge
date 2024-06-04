@@ -4,6 +4,8 @@ import IProductRepository from '../../ports/out/IProductRepository'
 import Product from '../entities/Product'
 import Id from '@/adapters/out/persistence/generateID/Id'
 import AppErros from '@/core/shared/error/AppErros'
+import PageResponse from '@/core/shared/pagination/PageResponse'
+import Pagination from '@/core/shared/pagination/Pagination'
 export default class ProductUseCase {
   constructor(private productRepository: IProductRepository) {}
 
@@ -27,7 +29,7 @@ export default class ProductUseCase {
 
   async findById(productId: string): Promise<Product> {
     const product = await this.productRepository.findById(productId)
-    if (!product) throw new AppErros(400, ErrosMessage.PRODUTO_NAO_LOCALIZADO)
+    if (!product) throw new AppErros(ErrosMessage.PRODUTO_NAO_LOCALIZADO, 400)
     return product
   }
 
@@ -37,5 +39,22 @@ export default class ProductUseCase {
 
   async listAll(page: number): Promise<Product[]> {
     return await this.productRepository.listAll(page)
+  }
+
+  async listAllProducts(page: number): Promise<PageResponse<Product>> {
+    const products = await this.productRepository.listAll(page)
+    const totalProducts: number = await this.productRepository.countProducts()
+    const totalPages = Math.ceil(totalProducts / 10)
+
+    const pagination: Pagination = {
+      currentPage: page,
+      totalPage: totalPages,
+      totalItems: Number(totalProducts),
+      itemsPerPage: 10,
+    }
+    return {
+      items: products,
+      pagination,
+    }
   }
 }

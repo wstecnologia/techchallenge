@@ -1,6 +1,7 @@
 import ProductController from '@/adapters/in/controllers/Product/ProductController'
 import ExpressAdapter from '../ExpressAdapter'
 import { Router } from 'express'
+import ProductUseCase from '@/core/product/domain/usecases/Product.usecase'
 
 class ProductRoutes {
   private router: Router

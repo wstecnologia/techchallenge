@@ -11,8 +11,8 @@ export class AuthenticationUseCase implements IRegisterUserUseCase, IAuthenticat
     return user
   }
 
-  public authenticate(cpf: string ): User | null {
+  public authenticate(cpf: string): User | null {
     const user = this.userRepository.findByEmail(cpf)
-    return user && user.cpf === cpf ? user : null
+    return null
   }
 }

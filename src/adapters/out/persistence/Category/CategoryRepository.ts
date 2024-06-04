@@ -43,15 +43,20 @@ export default class CategoryRepository implements ICategoryRepository {
     }
   }
 
-  public async listAll(page: number = 0): Promise<Category[]> {
+  public async listAll(): Promise<Category[]> {
     try {
-      const categories: Category[] = await this.pool.any(
-        `SELECT * FROM category LIMIT 10 OFFSET(${page} * 10)`,
-      )
+      const categories: Category[] = await this.pool.any(`SELECT * FROM category`)
       return categories
     } catch (error) {
       console.error('Error listing all categories:', error)
       throw new Error('Could not list categories')
     }
+  }
+
+  async countCategories(): Promise<number> {
+    const qtde = await db.oneOrNone(`select count(*) total from category`)
+    if (!qtde) return 0
+
+    return qtde.total
   }
 }

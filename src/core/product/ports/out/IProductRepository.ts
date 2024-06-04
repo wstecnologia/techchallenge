@@ -5,4 +5,5 @@ export default interface IProductRepository {
   findById(productId: string): Promise<Product | null>
   findByCategory(categoryid: string, page: number): Promise<Product[] | null>
   listAll(page: number): Promise<Product[]>
+  countProducts(): Promise<number>
 }
