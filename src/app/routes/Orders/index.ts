@@ -1,3 +1,4 @@
+import OrderController from "@/adapters/in/controllers/Order/OrderController";
 import ExpressAdapter from "../ExpressAdapter";
 
 export default class OrderRoutes {
@@ -5,38 +6,31 @@ export default class OrderRoutes {
     
     constructor(router: any){
         this.router = router
-
         this.initiazeRoutes()
     }
 
     private initiazeRoutes(){
-        this.router.post('/orders/new',ExpressAdapter.adaptRoute(this.newOrder.bind(this)))
-        this.router.post('/orders/add-item',ExpressAdapter.adaptRoute(this.addItemOrder.bind(this)))
-        this.router.put('/orders/update-status',ExpressAdapter.adaptRoute(this.updateStatusOrder.bind(this)))
-        this.router.get('/orders/status',ExpressAdapter.adaptRoute(this.getOrderPerStatus.bind(this)))
+        this.router.post('/orders/new',ExpressAdapter.adaptRoute(this.newOrder.bind(this)))        
+        this.router.get('/orders/list',ExpressAdapter.adaptRoute(this.listAllOrders.bind(this)))        
         this.router.post('/orders/payment',ExpressAdapter.adaptRoute(this.addPaymentOrders.bind(this)))
+        this.router.put('/orders/status',ExpressAdapter.adaptRoute(this.updateOrderStatus.bind(this)))
     }
 
-    private async newOrder({body}){
-        console.log(body)
-        return {message: "New order created success"}
+    private async newOrder({body}){        
+        return await OrderController.addOrder(body)
     }
 
-    private async addItemOrder(){
-        return {message: "Item Add order success"}
-    }
-
-    private async updateStatusOrder(){
-        return {message: "Update order status success"}
-    }
-
-    private async getOrderPerStatus(){
-        return {message: "Get order status success"}
+    private async listAllOrders(){
+        return await OrderController.listAllOrders()   
     }
 
     private async addPaymentOrders (){
         return {message: "Payment add success"}
     }
 
+    
+    private async updateOrderStatus ({ query }){
+        return await OrderController.updateOrderStatus(query.orderId, query.status)
+    }
     
 }

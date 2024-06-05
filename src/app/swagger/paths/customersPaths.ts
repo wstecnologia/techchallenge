@@ -63,23 +63,23 @@ export const customerPath = {
         },
         },
         responses: {
-        201: {
-            description: 'Created',
-        },
-        200: {
-            description: 'Success',
-        },
-        400: {
-            description: 'Invalid Request',
-        },
-        401: {
-            description: 'Invalid Access',
-        },
+            201: {
+                description: 'Created',
+            },
+            200: {
+                description: 'Success',
+            },
+            400: {
+                description: 'Invalid Request',
+            },
+            401: {
+                description: 'Invalid Access',
+            },
 
-                500:{
-                    description: 'Internal Server Error',
-                }
+            500:{
+                description: 'Internal Server Error',
             }
+        }
     },
 
     get: {

@@ -45,6 +45,10 @@ create table IF NOT EXISTS OrdersItems (
 	id uuid primary key,
 	numberOrder integer not null,
 	productId uuid not null,
+<<<<<<< Updated upstream
+=======
+  quantity integer not null, 	
+>>>>>>> Stashed changes
 	productDescription varchar(255) not null,
 	productPrice float not null,
 	active boolean DEFAULT true,
