@@ -1,7 +1,6 @@
 import Order from '../entities/Order'
 import OrderRepository from '../../ports/out/OrderRepository'
 import Id from '@/core/shared/Id'
-import OrderItems from '../entities/OrderItems'
 import AppErros from '@/core/shared/error/AppErros'
 
 export default class OrderUseCase {
@@ -22,7 +21,6 @@ export default class OrderUseCase {
       orderItem.id = Id.gerar()
       orderItem.dataCreated = new Date().toLocaleString()
     })
-
      
     return await this.orderRepository.createdOrder(order)
   }

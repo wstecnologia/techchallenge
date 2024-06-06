@@ -6,3 +6,9 @@ insert into Situactions (id, description ) values
     
 insert into Customers (id, name, email, cpf) values
     ("eefdd3d4-97af-4ae6-bdc7-2f8ec461b28c","Anônimo","anonimo@ws.com.br","12345678909");
+
+INSERT INTO public.category (id, name, description) VALUES
+(uuid_generate_v4(), 'Lanche', 'Lanches diversos.'),
+(uuid_generate_v4(), 'Acompanhamento', 'Acompanhamentos conforme sua preferência.'),
+(uuid_generate_v4(), 'Bebida', 'Temos bebidas refrigerantes e sucos.'),
+(uuid_generate_v4(), 'Sobremesa', 'Sobremesas deliciosas.');
