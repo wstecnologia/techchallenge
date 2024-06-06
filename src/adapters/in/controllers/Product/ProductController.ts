@@ -34,4 +34,8 @@ export default class ProductController {
     const products = await this.productUseCase.listAllProducts(page)
     return products
   }
+
+  async delete(productId: string): Promise<void> {
+    await this.productUseCase.delete(productId)
+  }
 }

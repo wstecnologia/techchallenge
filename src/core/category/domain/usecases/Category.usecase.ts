@@ -35,4 +35,12 @@ export default class CategoryUseCase {
       pagination,
     }
   }
+  async delete(categoryId: string): Promise<void> {
+    this.categoryRepository.delete(categoryId)
+  }
+
+  async countCategories(): Promise<number> {
+    const qtde = await this.categoryRepository.countCategories()
+    return qtde
+  }
 }

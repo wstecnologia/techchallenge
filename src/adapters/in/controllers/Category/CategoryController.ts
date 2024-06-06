@@ -8,6 +8,12 @@ const categoryRepository = new CategoryRepository()
 const categoryUseCase = new CategoryUseCase(categoryRepository)
 
 export default class CategoryController implements ICategoryRepository {
+  async countCategories(): Promise<number> {
+    const qtde = await categoryUseCase.countCategories()
+    if (!qtde) return 0
+    return qtde
+  }
+
   async registerCategory(category: Category): Promise<void> {
     await categoryUseCase.registerCategory(category)
   }
@@ -32,5 +38,9 @@ export default class CategoryController implements ICategoryRepository {
 
   public async listAllCategories(page: number): Promise<PageResponse<Category>> {
     return await categoryUseCase.listAllCategories(page)
+  }
+
+  async delete(categoryId: string): Promise<void> {
+    await categoryRepository.delete(categoryId)
   }
 }

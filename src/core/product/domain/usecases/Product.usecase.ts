@@ -1,5 +1,4 @@
 import ErrosMessage from '@/core/shared/error/ErrosMessage'
-import IProductUseCase from '../../ports/in/IProductUseCase'
 import IProductRepository from '../../ports/out/IProductRepository'
 import Product from '../entities/Product'
 import Id from '@/adapters/out/persistence/generateID/Id'
@@ -56,5 +55,9 @@ export default class ProductUseCase {
       items: products,
       pagination,
     }
+  }
+
+  async delete(productId: string): Promise<void> {
+    return this.productRepository.delete(productId)
   }
 }

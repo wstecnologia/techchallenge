@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { query, Router } from 'express'
 import CategoryController from '@/adapters/in/controllers/Category/CategoryController'
 import ExpressAdapter from '../ExpressAdapter'
 
@@ -31,11 +31,12 @@ class CategoryRoutes {
 
   private async listAll({ query }: { query: any }) {
     const { page } = query
-    return this.categoryController.listAll(Number(page))
+    return this.categoryController.listAllCategories(Number(page))
   }
 
-  private async deleteCategory() {
-    return { message: 'Categoria excluída com sucesso' }
+  private async deleteCategory({ query }: { query: any }) {
+    const { id } = query
+    await this.categoryController.delete(id)
   }
 }
 

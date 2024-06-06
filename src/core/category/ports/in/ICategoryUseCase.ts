@@ -5,4 +5,5 @@ export default interface ICategoryUseCase {
   registerCategory(category: Category): Promise<void>
   listAll(page: number): Promise<Category[] | null>
   countCategories(): Promise<number>
+  delete(categoryId: string): void
 }

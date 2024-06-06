@@ -2,19 +2,12 @@ import IProductRepository from '@/core/product/ports/out/IProductRepository'
 import db from '../DB/db'
 import Product from '@/core/product/domain/entities/Product'
 import Id from '../generateID/Id'
-import pgPromise from 'pg-promise'
 
 export default class ProductRepository implements IProductRepository {
-  private pool: pgPromise.IDatabase<{}>
-
-  constructor() {
-    this.pool = db
-  }
-
   async registerProduct(product: Product): Promise<void> {
     const productId = Id.gerar()
     try {
-      await this.pool.query(
+      await db.query(
         `INSERT INTO product (id, name, description, price, categoryid, image)
          VALUES ($1, $2, $3, $4, $5, $6)`,
         [
@@ -32,15 +25,15 @@ export default class ProductRepository implements IProductRepository {
   }
 
   async countProducts(): Promise<number> {
-    const qtde = await db.oneOrNone(`select count(*) total from products`)
+    const qtde = await db.oneOrNone(`select count(*) total from product where active = true`)
     if (!qtde) return 0
 
     return qtde.total
   }
 
   async findById(productId: string): Promise<Product> {
-    const query = 'SELECT * FROM product WHERE id = $1'
-    const result = await this.pool.oneOrNone(query, [productId])
+    const query = 'SELECT * FROM product WHERE id = $1 and active = true'
+    const result = await db.oneOrNone(query, [productId])
     if (!result) {
       return null
     }
@@ -48,23 +41,26 @@ export default class ProductRepository implements IProductRepository {
   }
 
   async findByCategory(categoryid: string, page: number = 0): Promise<Product[]> {
-    const query = `SELECT * FROM product WHERE categoryid = $1 LIMIT 10 OFFSET(${page} * 10)`
-    const result = await this.pool.any(query, [categoryid])
+    const query = `SELECT * FROM product WHERE categoryid = $1 and active = true LIMIT 10 OFFSET(${page} * 10)`
+    const result = await db.any(query, [categoryid])
     return result
   }
 
   async listAll(page: number = 0): Promise<Product[]> {
     try {
-      const products: Product[] = await this.pool.any(
-        `SELECT * FROM product LIMIT 10 OFFSET(${page} * 10)`,
-      )
+      const products: Product[] = await db.any(`SELECT * FROM product where active = true`)
       return products
     } catch (error) {
       throw new Error('Could not list products')
     }
   }
 
-  // listAllProducts(page: number): Promise<Product[]> {
-  //   throw new Error('Method not implemented.')
-  // }
+  async delete(productId: string): Promise<void> {
+    try {
+      const query = `update product set actove = false WHERE id = $1 and active = true)`
+      await db.any(query, [productId])
+    } catch (error) {
+      throw new Error('Could not delete products')
+    }
+  }
 }

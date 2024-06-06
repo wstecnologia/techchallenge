@@ -8,7 +8,7 @@
     active boolean DEFAULT true
   );
 
-  create table IF NOT EXISTS Situactions (
+  create table IF NOT EXISTS Situations (
   id uuid primary key NOT NULL,
   description varchar(255) not null,
   active boolean DEFAULT true
@@ -17,7 +17,8 @@
   CREATE TABLE IF NOT EXISTS Category (
     id uuid PRIMARY KEY NOT NULL,
     name VARCHAR(255),
-    description VARCHAR(255)
+    description VARCHAR(255),
+    active boolean DEFAULT true
   );
 
   CREATE TABLE IF NOT EXISTS Product (
@@ -27,6 +28,7 @@
     price NUMERIC,
     categoryId uuid not null,
     image VARCHAR(255),
+    active boolean DEFAULT true
     foreign key (categoryId) references Category (id)
   );
 

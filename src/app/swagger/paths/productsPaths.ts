@@ -151,7 +151,7 @@ export const productPath = {
           description: 'Product Code',
           required: true,
           schema: {
-            type: 'number',
+            type: 'string',
           },
         },
       ],
@@ -174,10 +174,10 @@ export const productPath = {
       },
     },
   },
-  '/api/products/id': {
+  '/api/products/catagory': {
     get: {
       tags: ['Products'],
-      summary: 'List Product by Id ',
+      summary: 'List Product by Category ',
       parameters: [
         {
           name: 'id',
