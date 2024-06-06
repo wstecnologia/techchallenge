@@ -43,13 +43,13 @@
     foreign key (situationId) references Situactions (id)
   );
 
-  create table IF NOT EXISTS OrdersItems (
-    id uuid primary key,
-    numberOrder integer not null,
-    productId uuid not null,
-    productDescription varchar(255) not null,
-    productPrice float not null,
-    active boolean DEFAULT true,
-    dataCreated timestamp NOT NULL,
-    foreign key (productId) references Product (id)
-  );
+create table IF NOT EXISTS OrdersItems (
+	id uuid primary key,
+	numberOrder integer not null,
+	productId uuid not null,
+	productDescription varchar(255) not null,
+	productPrice float not null,
+	active boolean DEFAULT true,
+	dataCreated timestamp NOT NULL,
+  foreign key (productId) references Product (id)
+);

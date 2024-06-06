@@ -23,7 +23,6 @@ export const productPath = {
                 },
                 price: {
                   type: 'number',
-                  example: 'Preço do produto a ser alterado ',
                 },
                 image: {
                   type: 'number',
