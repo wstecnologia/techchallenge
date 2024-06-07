@@ -5,4 +5,6 @@ export default interface IProductUseCase {
   findById(productId: string): Promise<Product | null>
   findByCategory(categoryid: string, page: number): Promise<Product[] | null>
   listAll(page: number): Promise<Product[]>
+  countProducts(): Promise<number>
+  delete(productId: string): void
 }

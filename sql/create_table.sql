@@ -1,4 +1,4 @@
-create extension if not exists "uuid-ossp";
+  create extension if not exists "uuid-ossp";
 
 create table IF NOT EXISTS Customers (
 	id uuid primary key NOT NULL,
@@ -64,12 +64,14 @@ create table IF NOT EXISTS OrdersItems (
   foreign key (numberOrder) references Orders (number)
 );
 
-CREATE TABLE IF NOT EXISTS Payments (
+
+CREATE TABLE IF NOT EXISTS payments (
     id uuid PRIMARY KEY,
     orderId uuid NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
-    status VARCHAR(50) NOT NULL,
+    status VARCHAR(50) NOT NULL,    
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (orderId) REFERENCES orders(id)
 );
+

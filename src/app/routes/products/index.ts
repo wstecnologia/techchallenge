@@ -17,6 +17,7 @@ class ProductRoutes {
     this.router.get('/products/id', ExpressAdapter.adaptRoute(this.findById.bind(this)))
     this.router.get('/products/category', ExpressAdapter.adaptRoute(this.findByCategory.bind(this)))
     this.router.get('/products', ExpressAdapter.adaptRoute(this.listAll.bind(this)))
+    this.router.delete('/products/id', ExpressAdapter.adaptRoute(this.delete.bind(this)))
   }
 
   private async registerProduct({ body }: { body: any }) {
@@ -35,7 +36,12 @@ class ProductRoutes {
 
   private async listAll({ query }: { query: any }) {
     const { page } = query
-    return this.productController.listAll(Number(page))
+    return this.productController.listAllProducts(Number(page))
+  }
+
+  private async delete({ query }: { query: any }) {
+    const { id } = query
+    return this.productController.delete(id)
   }
 }
 
