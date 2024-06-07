@@ -12,7 +12,6 @@ export default class CategoryRepository implements ICategoryRepository {
         [Id.gerar(), category.name, category.description],
       )
     } catch (error) {
-      console.error('Error saving category:', error)
       throw new Error('Could not save category')
     }
   }
@@ -31,7 +30,6 @@ export default class CategoryRepository implements ICategoryRepository {
       }
       return category
     } catch (error) {
-      console.error('Error finding category by ID:', error)
       throw new Error('Could not find category by ID')
     }
   }

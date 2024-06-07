@@ -21,7 +21,7 @@ export default class ProductController {
     return [product]
   }
 
-  async findByCategory(categoryId: string, page: number): Promise<Product[]> {
+  async findByCategory(categoryId: string, page: number): Promise<PageResponse<Product>> {
     return await this.productUseCase.findByCategory(categoryId, page)
   }
 

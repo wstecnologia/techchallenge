@@ -33,7 +33,7 @@
   );
 
   create table IF NOT EXISTS Orders (
-    id uuid NOT NULL,
+    id uuid NOT NULL primary key,
     number integer NOT NULL,
     dataCreated timestamp NOT NULL,
     customerId uuid NOT NULL,
@@ -52,4 +52,33 @@ create table IF NOT EXISTS OrdersItems (
 	active boolean DEFAULT true,
 	dataCreated timestamp NOT NULL,
   foreign key (productId) references Product (id)
+);
+
+
+CREATE TABLE IF NOT EXISTS payments (
+    id UUID PRIMARY KEY,
+    orderId UUID NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    qrCode TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (orderId) REFERENCES orders(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS payments
+(
+    id uuid NOT NULL,
+    orderid uuid NOT NULL,
+    amount numeric(10,2) NOT NULL,
+    status character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    qrcode text COLLATE pg_catalog."default" NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT payments_pkey PRIMARY KEY (id),
+    CONSTRAINT payments_orderid_fkey FOREIGN KEY (orderid)
+        REFERENCES orders (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
 );

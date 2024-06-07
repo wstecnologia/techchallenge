@@ -46,7 +46,6 @@ export const productPath = {
         401: {
           description: 'Invalid Access',
         },
-
         500: {
           description: 'Internal Server Error',
         },
@@ -173,19 +172,29 @@ export const productPath = {
       },
     },
   },
-  '/api/products/catagory': {
+  '/api/products/category': {
     get: {
       tags: ['Products'],
       summary: 'List Product by Category ',
       parameters: [
         {
-          name: 'id',
+          name: 'category',
           in: 'query',
-          description: 'Id',
+          description: 'Category',
           required: true,
-          default: 0,
+          default: '471fec1d-db1c-406d-87ce-50be1232fba1',
           schema: {
             type: 'string',
+          },
+        },
+        {
+          name: 'page',
+          in: 'query',
+          description: 'Page number',
+          required: false,
+          default: 1,
+          schema: {
+            type: 'integer',
           },
         },
       ],

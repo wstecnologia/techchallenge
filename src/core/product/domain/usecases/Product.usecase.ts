@@ -32,8 +32,25 @@ export default class ProductUseCase {
     return product
   }
 
-  async findByCategory(categoryId: string, page: number): Promise<Product[]> {
-    return await this.productRepository.findByCategory(categoryId, page)
+  async findByCategory(categoryId: string, page: number): Promise<PageResponse<Product>> {
+    const products = await this.productRepository.findByCategory(categoryId)
+
+    if (!products) {
+      throw new AppErros(ErrosMessage.PRODUTO_NAO_LOCALIZADO)
+    }
+
+    const totalProducts: number = await this.productRepository.countProducts()
+    const totalPages = Math.ceil(totalProducts / 10)
+    const pagination: Pagination = {
+      currentPage: page,
+      totalPage: totalPages,
+      totalItems: Number(totalProducts),
+      itemsPerPage: 10,
+    }
+    return {
+      items: products,
+      pagination,
+    }
   }
 
   async listAll(page: number): Promise<Product[]> {

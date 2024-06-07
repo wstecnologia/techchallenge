@@ -6,22 +6,19 @@ import Id from '../generateID/Id'
 export default class ProductRepository implements IProductRepository {
   async registerProduct(product: Product): Promise<void> {
     const productId = Id.gerar()
-    try {
-      await db.query(
-        `INSERT INTO product (id, name, description, price, categoryid, image)
+
+    await db.query(
+      `INSERT INTO product (id, name, description, price, categoryid, image)
          VALUES ($1, $2, $3, $4, $5, $6)`,
-        [
-          productId,
-          product.name,
-          product.description,
-          product.price,
-          product.categoryId,
-          product.image,
-        ],
-      )
-    } catch (err) {
-      throw new Error(`Erro ao cadastrar produto: ${err}`)
-    }
+      [
+        productId,
+        product.name,
+        product.description,
+        product.price,
+        product.categoryId,
+        product.image,
+      ],
+    )
   }
 
   async countProducts(): Promise<number> {
@@ -40,27 +37,20 @@ export default class ProductRepository implements IProductRepository {
     return result
   }
 
-  async findByCategory(categoryid: string, page: number = 0): Promise<Product[]> {
-    const query = `SELECT * FROM product WHERE categoryid = $1 and active = true LIMIT 10 OFFSET(${page} * 10)`
+  async findByCategory(categoryid: string): Promise<Product[]> {
+    const query = `SELECT * FROM product WHERE categoryid = $1 and active = true`
     const result = await db.any(query, [categoryid])
+
     return result
   }
 
   async listAll(page: number = 0): Promise<Product[]> {
-    try {
-      const products: Product[] = await db.any(`SELECT * FROM product where active = true`)
-      return products
-    } catch (error) {
-      throw new Error('Could not list products')
-    }
+    const products: Product[] = await db.any(`SELECT * FROM product where active = true`)
+    return products
   }
 
   async delete(productId: string): Promise<void> {
-    try {
-      const query = `update product set actove = false WHERE id = $1 and active = true)`
-      await db.any(query, [productId])
-    } catch (error) {
-      throw new Error('Could not delete products')
-    }
+    const query = `update product set actove = false WHERE id = $1 and active = true)`
+    await db.any(query, [productId])
   }
 }
