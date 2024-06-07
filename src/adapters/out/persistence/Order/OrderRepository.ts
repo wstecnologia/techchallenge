@@ -5,6 +5,19 @@ import db from '../DB/db'
 
 export default class OrderRepository implements IOrderRepository {
 
+  async countOrders(): Promise<number> {
+
+    const qtde = await db.oneOrNone(`
+        SELECT
+          count(o.id) total
+        FROM orders o
+        inner join situations s on s.id = o.situationid
+        inner join customers c on c.id = o.customerid `)
+    if (!qtde) return 0
+
+    return qtde.total
+  }
+
   async updateOrderStatus(numberOrder: number, status: string): Promise<object | null> {
     await db.query(
       `UPDATE orders SET situationId = $1 WHERE number = $2`,
@@ -16,7 +29,8 @@ export default class OrderRepository implements IOrderRepository {
     return { message: "ALter Success" }
   }
 
-  async listAllOrders(): Promise<Order[] | null> {
+  async listAllOrders(page:number): Promise<Order[] | null> {
+
     const orders:Order [] = await db.any(
       `SELECT
         o.number,
@@ -25,8 +39,10 @@ export default class OrderRepository implements IOrderRepository {
         s.description situation,
         c.name customerName
       FROM orders o
-      inner join situactions s on s.id = o.situationid
-      inner join customers c on c.id = o.customerid`
+      inner join situations s on s.id = o.situationid
+      inner join customers c on c.id = o.customerid 
+      LIMIT 10 
+      OFFSET(${page} * 10)`
     )
     return orders
   }
@@ -48,13 +64,14 @@ export default class OrderRepository implements IOrderRepository {
 
       for (let i = 0; i < order.items.length; i++) {
         const item = order.items[i];
-        await db.query(`insert into ordersitems (id, numberorder, productid, productdescription, productprice, active, datacreated )
-          values ($1, $2, $3, $4, $5, $6,$7)`,
+        await db.query(`insert into ordersitems (id, numberorder, productid, productdescription, quantity, productprice, active, datacreated )
+          values ($1, $2, $3, $4, $5, $6,$7,$8)`,
         [
           item.id,
           order.number,
           item.productId,
           item.productDescription,
+          item.quantity,
           item.productPrice,
           true,
           item.dataCreated

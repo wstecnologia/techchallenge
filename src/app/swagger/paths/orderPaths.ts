@@ -17,28 +17,39 @@ export const orderPaths = {
                   type: 'string',
                 },
 
-                items: {
-                  type: 'array',
                   items: {
-                    type: 'object',
-                    properties: {
-                      productId: {
-                        type: 'string',
-                        required: true,
-                      },
-                      productDescription: {
-                        type: 'string',
-                      },
-                      productPrice: {
-                        type: 'number',
-                      },
-                      quantity: {
-                        type: 'number',
-                        required: true,
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        productId: {
+                          type: 'string',
+                          required: true,
+                        },
+                        productDescription: {
+                          type: 'string',
+                        },
+                        productPrice: {
+                          type: 'number',
+                        },
+                        quantity: {
+                          type: 'number',
+                          required: true,
+                        },
                       },
                     },
                   },
-                },
+                  payment: {
+              
+                      type: 'object',
+                      properties: {
+                        amount: {
+                          type: 'number',
+                          required: true,
+                        },                       
+                      },
+                    
+                  },
               },
             },
           },

@@ -11,8 +11,8 @@ export default class OrderController {
     return await orderUseCase.addOrder(order)      
   }
 
-  static async listAllOrders() {
-    return await orderUseCase.listAllOrders()    
+  static async listAllOrders(page:number) {
+    return await orderUseCase.listAllOrders(page)    
   }
 
   static async updateOrderStatus(orderId: number, status: string): Promise<object | null> {
