@@ -1,12 +1,16 @@
-import Order from '@/core/order/domain/entities/Order'
-import IOrderRepository from '@/core/order/ports/out/OrderRepository'
-import db from '../DB/db'
-
+import Order from "@/core/order/domain/entities/Order"
+import IOrderRepository from "@/core/order/ports/out/OrderRepository"
+import db from "../DB/db"
 
 export default class OrderRepository implements IOrderRepository {
+  async findOrderByNumber(orderNumber: number): Promise<Order | null> {
+    const order = await db.oneOrNone(`
+      SELECT * FROM orders where number = ${orderNumber}`)
+
+    return order
+  }
 
   async countOrders(): Promise<number> {
-
     const qtde = await db.oneOrNone(`
         SELECT
           count(o.id) total
@@ -19,19 +23,14 @@ export default class OrderRepository implements IOrderRepository {
   }
 
   async updateOrderStatus(numberOrder: number, status: string): Promise<object | null> {
-    await db.query(
-      `UPDATE orders SET situationId = $1 WHERE number = $2`,
-      [
-        status, 
-        numberOrder
-      ],
-    )
-    return { message: "ALter Success" }
+    return await db.query(`UPDATE orders SET situationId = $1 WHERE number = $2`, [
+      status,
+      numberOrder,
+    ])
   }
 
-  async listAllOrders(page:number): Promise<Order[] | null> {
-
-    const orders:Order [] = await db.any(
+  async listAllOrders(page: number = 0): Promise<Order[] | null> {
+    const orders: Order[] = await db.any(
       `SELECT
         o.number,
         o.datacreated,
@@ -42,29 +41,29 @@ export default class OrderRepository implements IOrderRepository {
       inner join situations s on s.id = o.situationid
       inner join customers c on c.id = o.customerid 
       LIMIT 10 
-      OFFSET(${page} * 10)`
+      OFFSET(${page} * 10)`,
     )
     return orders
   }
 
   async createdOrder(order: Order): Promise<number | null> {
+    await db.query(
+      `insert into orders (id, number, datacreated, customerid, situationid, observation)
+          values ($1, $2, $3, $4, $5, $6)`,
+      [
+        order.id,
+        order.number,
+        order.dataCreated,
+        order.customerId,
+        order.situationId,
+        order.observation,
+      ],
+    )
 
+    for (let i = 0; i < order.items.length; i++) {
+      const item = order.items[i]
       await db.query(
-        `insert into orders (id, number, datacreated, customerid, situationid, observation)
-        values ($1, $2, $3, $4, $5, $6)`,
-        [
-          order.id, 
-          order.number, 
-          order.dataCreated, 
-          order.customerId, 
-          order.situationId,
-          order.observation
-        ],
-      )
-
-      for (let i = 0; i < order.items.length; i++) {
-        const item = order.items[i];
-        await db.query(`insert into ordersitems (id, numberorder, productid, productdescription, quantity, productprice, active, datacreated )
+        `insert into ordersitems (id, numberorder, productid, productdescription, quantity, productprice, active, datacreated )
           values ($1, $2, $3, $4, $5, $6,$7,$8)`,
         [
           item.id,
@@ -74,17 +73,22 @@ export default class OrderRepository implements IOrderRepository {
           item.quantity,
           item.productPrice,
           true,
-          item.dataCreated
-        ])
-      }
+          item.dataCreated,
+        ],
+      )
+    }
 
-      
-      return order.number
-    
+    await db.query(
+      `insert into payments (id, orderid, amount, status )
+          values ($1, $2, $3, $4)`,
+      [order.payment.id, order.payment.orderId, order.payment.amount, order.payment.status],
+    )
+
+    return order.number
   }
 
-  async numberOrder(): Promise<number | null>{    
-    const retorno =  await db.oneOrNone(`select max(number) + 1 number from orders`)
+  async numberOrder(): Promise<number | null> {
+    const retorno = await db.oneOrNone(`select max(number) + 1 number from orders`)
     return retorno.number
   }
 }

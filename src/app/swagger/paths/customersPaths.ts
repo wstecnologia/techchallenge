@@ -1,116 +1,113 @@
 export const customerPath = {
-  '/api/customers/cpf': {
+  "/api/customers/cpf": {
     get: {
-      tags: ['Idendification'],
-      summary: 'Idendification customer by CPF',
+      tags: ["Idendification"],
+      summary: "Idendification customer by CPF",
       parameters: [
         {
-          name: 'cpf',
-          in: 'query',
-          description: 'Cpf Number',
+          name: "cpf",
+          in: "query",
+          description: "Cpf Number",
           required: true,
           schema: {
-            type: 'string',
+            type: "string",
           },
         },
       ],
       responses: {
         200: {
-          description: 'Success',
+          description: "Success",
         },
         400: {
-          description: 'Invalid Request',
+          description: "Invalid Request",
         },
         401: {
-          description: 'Invalid Access',
+          description: "Invalid Access",
         },
         404: {
-          description: 'Products not found',
+          description: "Customers not found",
         },
         500: {
-          description: 'Internal Server Error',
+          description: "Internal Server Error",
         },
       },
     },
   },
 
-  '/api/customers': {
+  "/api/customers": {
     post: {
-      tags: ['Customers'],
-      summary: 'Register Customers',
+      tags: ["Customers"],
+      summary: "Register Customers",
       requestBody: {
         content: {
-          'application/json': {
+          "application/json": {
             schema: {
-              type: 'object',
+              type: "object",
               properties: {
                 name: {
-                  type: 'string',
-                  example: 'João Pereira',
+                  type: "string",
                 },
                 email: {
-                  type: 'string',
-                  example: 'joaopereira@ws.com.br',
+                  type: "string",
                 },
                 cpf: {
-                  type: 'string',
-                  example: '12345678909',
+                  type: "string",
                 },
               },
             },
           },
         },
-        },
-        responses: {
+      },
+      responses: {
         201: {
-            description: 'Created',
+          description: "Created",
         },
         200: {
-            description: 'Success',
+          description: "Success",
         },
         400: {
-            description: 'Invalid Request',
+          description: "Invalid Request",
         },
         401: {
-            description: 'Invalid Access',
+          description: "Invalid Access",
         },
 
-                500:{
-                    description: 'Internal Server Error',
-                }
-            }
+        500: {
+          description: "Internal Server Error",
+        },
+      },
     },
 
     get: {
-      tags: ['Customers'],
-      summary: 'List customers',
+      tags: ["Customers"],
+      summary: "List customers",
       parameters: [
         {
-          name: 'page',
-          in: 'query',
-          description: 'Page Number',
+          name: "page",
+          in: "query",
+          description: "Page Number",
           required: true,
-          default: 0,
+          default: 1,
           schema: {
-            type: 'number',
+            type: "number",
           },
         },
       ],
       responses: {
         200: {
-          description: 'Sucesso',
+          description: "Success",
         },
         400: {
-          description: 'Requisição inválida',
+          description: "Invalid Request",
         },
         401: {
-          description: 'Acesso inválido',
+          description: "Invalid Access",
         },
         404: {
-          description: 'Clientes não encontrado',
+          description: "List Customers not found",
         },
         500: {
-          description: 'Erro interno do servidor',
+          description: "Internal Server Error",
         },
       },
     },

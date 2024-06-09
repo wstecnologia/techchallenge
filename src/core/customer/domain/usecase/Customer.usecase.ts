@@ -1,10 +1,10 @@
-import Id from '@/core/shared/Id'
-import Customer from '../entities/Customer'
-import ErrosMessage from '@/core/shared/error/ErrosMessage'
-import ICustomerRepository from '../../ports/out/CustomerRepository'
-import Pagination from '@/core/shared/pagination/Pagination'
-import PageResponse from '@/core/shared/pagination/PageResponse'
-import AppErros from '@/core/shared/error/AppErros'
+import Id from "@/core/shared/Id"
+import Customer from "../entities/Customer"
+import ErrosMessage from "@/core/shared/error/ErrosMessage"
+import ICustomerRepository from "../../ports/out/CustomerRepository"
+import Pagination from "@/core/shared/pagination/Pagination"
+import PageResponse from "@/core/shared/pagination/PageResponse"
+import AppErros from "@/core/shared/error/AppErros"
 
 export default class CustomerUseCase {
   constructor(private customerRepository: ICustomerRepository) {}
@@ -26,27 +26,41 @@ export default class CustomerUseCase {
     return newCustomer
   }
 
-  async listAllCustomers(page:number): Promise<PageResponse<Customer>>{
-    const customers = await this.customerRepository.listAll(page)
-    const totalCustomers:number = await this.customerRepository.countCustomers()
-    const totalPages = Math.ceil(totalCustomers / 10);
+  async listAllCustomers(page: number): Promise<PageResponse<Customer>> {
+    if (page <= 0) {
+      throw new AppErros(ErrosMessage.ENTER_PAGE_VALID, 404)
+    }
 
+    const customers = await this.customerRepository.listAll(page)
+    const totalCustomers: number = await this.customerRepository.countCustomers()
+    const totalPages = Math.ceil(totalCustomers / 10)
+    if (!customers) {
+      throw new AppErros(ErrosMessage.LIST_NOT_LOCALIZED, 404)
+    }
     const pagination: Pagination = {
-      currentPage:page,
-      totalPage:totalPages,
-      totalItems:Number(totalCustomers),
-      itemsPerPage:10
+      currentPage: page,
+      totalPage: totalPages,
+      totalItems: Number(totalCustomers),
+      itemsPerPage: 10,
     }
     return {
-      items:customers,
+      items: customers,
       pagination,
     }
   }
 
   async getCustomerCpf(cpf: string): Promise<Customer | null> {
-    const returnValidation =  await this.customerRepository.findByCpf(cpf)
-    if(!returnValidation) throw new AppErros(ErrosMessage.USUARIO_NAO_LOCALIZADO,401)
-          
+    if (cpf.length !== 11) {
+      throw new AppErros(ErrosMessage.NUMBER_OF_CPF_MUST_CONTAIN_DIGITS)
+    }
+
+    if (!cpf.toString().trim()) {
+      throw new AppErros(ErrosMessage.ENTER_VALID_NUMBER)
+    }
+
+    const returnValidation = await this.customerRepository.findByCpf(cpf)
+    if (!returnValidation) throw new AppErros(ErrosMessage.USUARIO_NAO_LOCALIZADO, 401)
+
     return returnValidation
   }
 }

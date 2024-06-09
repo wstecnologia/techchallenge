@@ -1,6 +1,6 @@
-import db from '@/adapters/out/persistence/DB/db'
-import Customer from '@/core/customer/domain/entities/Customer'
-import ICustomerRepository from '@/core/customer/ports/out/CustomerRepository'
+import db from "@/adapters/out/persistence/DB/db"
+import Customer from "@/core/customer/domain/entities/Customer"
+import ICustomerRepository from "@/core/customer/ports/out/CustomerRepository"
 
 export default class CustomerRepository implements ICustomerRepository {
   async findByCpf(cpf: string): Promise<Customer | null> {
@@ -36,7 +36,7 @@ export default class CustomerRepository implements ICustomerRepository {
   async save(customer: Customer): Promise<void> {
     await db.query(
       `insert into customers (id, name, email, cpf)
-      values ($1, $2, $3, $4)`,
+        values ($1, $2, $3, $4)`,
       [customer.id, customer.name, customer.email, customer.cpf],
     )
   }
