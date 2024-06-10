@@ -41,7 +41,7 @@ export default class OrderRepository implements IOrderRepository {
       inner join situations s on s.id = o.situationid
       inner join customers c on c.id = o.customerid 
       LIMIT 10 
-      OFFSET(${page} * 10)`,
+      OFFSET(${page - 1} * 10)`,
     )
     return orders
   }

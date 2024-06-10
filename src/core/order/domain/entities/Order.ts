@@ -1,6 +1,6 @@
 import AppErros from "@/core/shared/error/AppErros"
 import OrderItems from "./OrderItems"
-import Id from "@/core/shared/Id"
+import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import { Payment } from "@/core/payment/domain/entities/Payment"
 
 interface IOrder {
@@ -10,6 +10,7 @@ interface IOrder {
   payment: Payment
   situationId: string
   observation: string
+  idGenerator: IdGenerator
 }
 
 export default class Order {
@@ -26,8 +27,9 @@ export default class Order {
     payment: Payment,
     private _situationId: string,
     private _observation: string,
+    idGenerator: IdGenerator,
   ) {
-    this._id = Id.gerar()
+    this._id = idGenerator.gerar()
     this._payments = this.addPayment(payment)
     this._dataCreated = new Date().toLocaleString()
     this._customerId = this.validateCustomer(customerId)
@@ -42,6 +44,7 @@ export default class Order {
       order.payment,
       order.situationId,
       order.observation,
+      order.idGenerator,
     )
   }
 
