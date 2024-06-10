@@ -7,10 +7,8 @@ import AppErros from "@/core/shared/error/AppErros"
 import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 
 export default class CustomerUseCase {
-  constructor(
-    private customerRepository: ICustomerRepository,
-    private idGenerator: IdGenerator,
-  ) {}
+  private idGenerator: IdGenerator
+  constructor(private customerRepository: ICustomerRepository) {}
 
   async registerCustomer(newCustomers: Customer): Promise<Customer> {
     const cpf = newCustomers.cpf.replace(/\D/g, "")
