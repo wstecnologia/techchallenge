@@ -1,45 +1,40 @@
-import Category from '@/core/category/domain/entities/Category'
-import ICategoryRepository from '@/core/category/ports/out/ICategoryRepository'
-import db from '../DB/db'
-import Id from '@/core/shared/Id'
+import Category from "@/core/category/domain/entities/Category"
+import ICategoryRepository from "@/core/category/ports/out/ICategoryRepository"
+import db from "../DB/db"
+import Id from "@/core/shared/Id"
 
 export default class CategoryRepository implements ICategoryRepository {
   public async registerCategory(category: Category): Promise<void> {
-    try {
-      await db.query(
-        `INSERT INTO Category (id, name, description)
+    await db.query(
+      `INSERT INTO Category (id, name, description)
          VALUES ($1, $2, $3)`,
-        [Id.gerar(), category.name, category.description],
-      )
-    } catch (error) {
-      throw new Error('Could not save category')
-    }
+      [Id.gerar(), category.name, category.description],
+    )
   }
 
   public async findById(categoryId: string): Promise<Category | null> {
-    try {
-      const query = 'SELECT * FROM category WHERE id = $1 and active = true'
-      const result = await db.oneOrNone(query, [categoryId])
-      if (!result) {
-        return null
-      }
-      const category: Category = {
-        id: result.id,
-        name: result.name,
-        description: result.description,
-      }
-      return category
-    } catch (error) {
-      throw new Error('Could not find category by ID')
+    const query = "SELECT * FROM category WHERE id = $1 and active = true"
+    const result = await db.oneOrNone(query, [categoryId])
+    if (!result) {
+      return null
     }
+    const category: Category = {
+      id: result.id,
+      name: result.name,
+      description: result.description,
+    }
+    return category
   }
 
-  public async listAll(): Promise<Category[]> {
+  public async listAll(page: number = 1): Promise<Category[] | null> {
     try {
-      const categories: Category[] = await db.any(`SELECT * FROM category where active = true`)
+      const categories: Category[] = await db.any(
+        `SELECT * FROM category WHERE active = true LIMIT 10 OFFSET(${page - 1} * 10)`,
+      )
       return categories
     } catch (error) {
-      throw new Error('Could not list categories')
+      console.error("Error fetching categories:", error)
+      return null
     }
   }
 
@@ -55,7 +50,7 @@ export default class CategoryRepository implements ICategoryRepository {
       const query = `update category set actove = false WHERE id = $1)`
       await db.any(query, [categoryId])
     } catch (error) {
-      throw new Error('Could not delete category')
+      throw new Error("Could not delete category")
     }
   }
 }

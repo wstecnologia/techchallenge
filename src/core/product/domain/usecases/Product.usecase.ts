@@ -1,10 +1,11 @@
-import ErrosMessage from '@/core/shared/error/ErrosMessage'
-import IProductRepository from '../../ports/out/IProductRepository'
-import Product from '../entities/Product'
-import Id from '@/adapters/out/persistence/generateID/Id'
-import AppErros from '@/core/shared/error/AppErros'
-import PageResponse from '@/core/shared/pagination/PageResponse'
-import Pagination from '@/core/shared/pagination/Pagination'
+import Id from "@/adapters/out/persistence/generateID/Id"
+import AppErros from "@/core/shared/error/AppErros"
+import ErrosMessage from "@/core/shared/error/ErrosMessage"
+import PageResponse from "@/core/shared/pagination/PageResponse"
+import Pagination from "@/core/shared/pagination/Pagination"
+import IProductRepository from "../../ports/out/IProductRepository"
+import Product from "../entities/Product"
+
 export default class ProductUseCase {
   constructor(private productRepository: IProductRepository) {}
 
@@ -33,7 +34,7 @@ export default class ProductUseCase {
   }
 
   async findByCategory(categoryId: string, page: number): Promise<PageResponse<Product>> {
-    const products = await this.productRepository.findByCategory(categoryId)
+    const products = await this.productRepository.findByCategory(categoryId, page)
 
     if (!products) {
       throw new AppErros(ErrosMessage.PRODUTO_NAO_LOCALIZADO)
@@ -76,5 +77,18 @@ export default class ProductUseCase {
 
   async delete(productId: string): Promise<void> {
     return this.productRepository.delete(productId)
+  }
+
+  async updateProduct(product: Product): Promise<void> {
+    const existingProduct = await this.productRepository.findById(product.id)
+    const newProduct = new Product(
+      product.id,
+      product.name,
+      product.description,
+      product.price,
+      product.categoryId,
+      product.image,
+    )
+    await this.productRepository.updateProduct(newProduct)
   }
 }

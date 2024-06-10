@@ -1,7 +1,7 @@
-import IProductRepository from '@/core/product/ports/out/IProductRepository'
-import db from '../DB/db'
-import Product from '@/core/product/domain/entities/Product'
-import Id from '../generateID/Id'
+import Product from "@/core/product/domain/entities/Product"
+import IProductRepository from "@/core/product/ports/out/IProductRepository"
+import db from "../DB/db"
+import Id from "../generateID/Id"
 
 export default class ProductRepository implements IProductRepository {
   async registerProduct(product: Product): Promise<void> {
@@ -22,14 +22,14 @@ export default class ProductRepository implements IProductRepository {
   }
 
   async countProducts(): Promise<number> {
-    const qtde = await db.oneOrNone(`select count(*) total from product where active = true`)
+    const qtde = await db.oneOrNone(`SELECT count(*) AS total FROM product WHERE active = true`)
     if (!qtde) return 0
 
     return qtde.total
   }
 
   async findById(productId: string): Promise<Product> {
-    const query = 'SELECT * FROM product WHERE id = $1 and active = true'
+    const query = "SELECT * FROM product WHERE id = $1 AND active = true"
     const result = await db.oneOrNone(query, [productId])
     if (!result) {
       return null
@@ -37,20 +37,43 @@ export default class ProductRepository implements IProductRepository {
     return result
   }
 
-  async findByCategory(categoryid: string): Promise<Product[]> {
-    const query = `SELECT * FROM product WHERE categoryid = $1 and active = true`
+  async findByCategory(categoryid: string, page: number = 1): Promise<Product[]> {
+    const query = `SELECT * FROM product WHERE categoryid = $1 AND active = true LIMIT 10 OFFSET((${
+      page - 1
+    } * 10))`
     const result = await db.any(query, [categoryid])
 
     return result
   }
 
-  async listAll(page: number = 0): Promise<Product[]> {
-    const products: Product[] = await db.any(`SELECT * FROM product where active = true`)
+  async listAll(page: number = 1): Promise<Product[]> {
+    const products: Product[] = await db.any(
+      `SELECT * FROM product WHERE active = true LIMIT 10 OFFSET(${page} * 10)`,
+    )
     return products
   }
 
   async delete(productId: string): Promise<void> {
-    const query = `update product set actove = false WHERE id = $1 and active = true)`
-    await db.any(query, [productId])
+    const query = `UPDATE product SET active = false WHERE id = $1 AND active = true`
+    await db.none(query, [productId])
+  }
+
+  async updateProduct(product: Product): Promise<void> {
+    const query = `UPDATE product
+                   SET name = $1,
+                       description = $2,
+                       price = $3,
+                       categoryid = $4,
+                       image = $5
+                   WHERE id = $6 AND active = true`
+
+    await db.none(query, [
+      product.name,
+      product.description,
+      product.price,
+      product.categoryId,
+      product.image,
+      product.id,
+    ])
   }
 }

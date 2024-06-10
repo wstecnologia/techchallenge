@@ -1,4 +1,4 @@
-import Category from '../../domain/entities/Category'
+import Category from "../../domain/entities/Category"
 
 export default interface ICategorysitory {
   findById(categoryId: string): Promise<Category | null>
