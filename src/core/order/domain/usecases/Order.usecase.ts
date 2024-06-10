@@ -4,8 +4,10 @@ import Pagination from "@/core/shared/pagination/Pagination"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 import AppErros from "@/core/shared/error/AppErros"
+import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 
 export default class OrderUseCase {
+  private _idGenerator: IdGenerator
   constructor(private orderRepository: OrderRepository) {}
 
   async addOrder(order: Order): Promise<object | null> {
@@ -18,6 +20,7 @@ export default class OrderUseCase {
       observation: order.observation,
       customerId: order.customerId,
       payment: order.payment,
+      idGenerator: this._idGenerator,
     })
 
     await this.orderRepository.createdOrder(ordernew)

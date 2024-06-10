@@ -1,26 +1,33 @@
-import Id from "@/core/shared/Id"
 import Customer from "../entities/Customer"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 import ICustomerRepository from "../../ports/out/CustomerRepository"
 import Pagination from "@/core/shared/pagination/Pagination"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import AppErros from "@/core/shared/error/AppErros"
+import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 
 export default class CustomerUseCase {
+  private idGenerator: IdGenerator
   constructor(private customerRepository: ICustomerRepository) {}
 
   async registerCustomer(newCustomers: Customer): Promise<Customer> {
-    const existingCustomer = await this.customerRepository.findByCpf(newCustomers.cpf)
+    const cpf = newCustomers.cpf.replace(/\D/g, "")
+    if (!cpf) {
+      throw new AppErros(ErrosMessage.INFORM_NUMBER_CPF)
+    }
+
+    const existingCustomer = await this.customerRepository.findByCpf(cpf)
+
     if (existingCustomer) {
       throw new AppErros(ErrosMessage.USUARIO_JA_EXISTE)
     }
 
-    const newCustomer = new Customer(
-      Id.gerar(),
-      newCustomers.name,
-      newCustomers.email,
-      newCustomers.cpf,
-    )
+    const newCustomer = Customer.factory({
+      name: newCustomers.name,
+      email: newCustomers.email,
+      cpf: newCustomers.cpf,
+      idGenerator: this.idGenerator,
+    })
 
     await this.customerRepository.save(newCustomer)
     return newCustomer

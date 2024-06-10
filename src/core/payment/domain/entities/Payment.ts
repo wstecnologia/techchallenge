@@ -1,4 +1,4 @@
-import Id from "@/core/shared/Id"
+import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 
 export enum PaymentStatus {
   Pending = "Pending",
@@ -14,9 +14,10 @@ export class Payment {
   constructor(
     public orderId: string,
     public amount: number,
+    idGenerator: IdGenerator,
   ) {
     this._status = PaymentStatus.Completed
-    this._id = Id.gerar()
+    this._id = idGenerator.gerar()
     this._date = new Date()
   }
 

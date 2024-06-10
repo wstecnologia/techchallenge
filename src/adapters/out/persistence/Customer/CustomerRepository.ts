@@ -11,7 +11,7 @@ export default class CustomerRepository implements ICustomerRepository {
 
   async listAll(page: number = 0): Promise<Customer[] | null> {
     const usuario: Customer[] = await db.any(
-      `select * from customers LIMIT 10 OFFSET(${page} * 10)`,
+      `select * from customers LIMIT 10 OFFSET(${page - 1} * 10)`,
     )
 
     if (usuario.length === 0) return null
