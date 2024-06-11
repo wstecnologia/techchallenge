@@ -1,4 +1,3 @@
-import Id from "@/adapters/out/persistence/generateID/Id"
 import AppErros from "@/core/shared/error/AppErros"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
@@ -8,15 +7,17 @@ import IProductRepository from "../../ports/out/IProductRepository"
 import Product from "../entities/Product"
 
 export default class ProductUseCase {
-  private idGenerator: IdGenerator
-  constructor(private productRepository: IProductRepository) {}
+  constructor(
+    private productRepository: IProductRepository,
+    private idGenerator: IdGenerator,
+  ) {}
 
   async registerProduct(product: Product): Promise<void> {
     const existingProduct = await this.productRepository.findById(product.id)
     if (existingProduct) {
       throw new Error(ErrosMessage.PRODUTO_JA_EXISTE)
     }
-    const idGenerator: IdGenerator = new Id()
+
     const newProduct = Product.factory({
       name: product.name,
       description: product.description,
@@ -24,7 +25,7 @@ export default class ProductUseCase {
       categoryId: product.categoryId,
       image: product.image,
       activite: product.activite,
-      id: idGenerator.gerar(),
+      id: this.idGenerator.gerar(),
     })
 
     await this.productRepository.registerProduct(newProduct)

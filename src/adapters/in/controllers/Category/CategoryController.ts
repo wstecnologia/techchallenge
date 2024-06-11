@@ -1,13 +1,11 @@
-import CategoryRepository from "@/adapters/out/persistence/Category/CategoryRepository"
 import Category from "@/core/category/domain/entities/Category"
 import CategoryUseCase from "@/core/category/domain/usecases/Category.usecase"
 import ICategoryRepository from "@/core/category/ports/out/ICategoryRepository"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 
-const categoryRepository = new CategoryRepository()
-
 export default class CategoryController implements ICategoryRepository {
   constructor(private categoryUseCase: CategoryUseCase) {}
+
   async countCategories(): Promise<number> {
     const qtde = await this.categoryUseCase.countCategories()
     if (!qtde) return 0

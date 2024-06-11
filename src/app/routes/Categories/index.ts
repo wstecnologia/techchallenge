@@ -2,6 +2,7 @@ import CategoryController from "@/adapters/in/controllers/Category/CategoryContr
 import CategoryRepository from "@/adapters/out/persistence/Category/CategoryRepository"
 import CategoryUseCase from "@/core/category/domain/usecases/Category.usecase"
 import ExpressAdapter from "../ExpressAdapter"
+import Id from "@/adapters/out/persistence/generateID/Id"
 class CategoryRoutes {
   private router: any
   private categoryController: CategoryController
@@ -9,7 +10,8 @@ class CategoryRoutes {
   constructor(router: any) {
     this.router = router
     const categoryRepository = new CategoryRepository()
-    const categoryUserCase = new CategoryUseCase(categoryRepository)
+    const idGenerator = new Id()
+    const categoryUserCase = new CategoryUseCase(categoryRepository, idGenerator)
     this.categoryController = new CategoryController(categoryUserCase)
     this.initializeRoutes()
   }

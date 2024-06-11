@@ -4,7 +4,7 @@ import db from "../DB/db"
 
 export default class ProductRepository implements IProductRepository {
   async registerProduct(product: Product): Promise<void> {
-    const productId  = product.id
+    const productId = product.id
 
     await db.query(
       `INSERT INTO product (id, name, description, price, categoryid, image)
@@ -36,7 +36,7 @@ export default class ProductRepository implements IProductRepository {
     return result
   }
 
-  async findByCategory(categoryid: string, page: number = 1): Promise<Product[]> {
+  async findByCategory(categoryid: string, page: number = 0): Promise<Product[]> {
     const query = `SELECT * FROM product WHERE categoryid = $1 AND active = true LIMIT 10
     OFFSET(${page - 1} * 10)`
 
@@ -45,9 +45,9 @@ export default class ProductRepository implements IProductRepository {
     return result
   }
 
-  async listAll(page: number = 1): Promise<Product[]> {
+  async listAll(page: number = 0): Promise<Product[]> {
     const products: Product[] = await db.any(
-      `SELECT * FROM product WHERE active = true LIMIT 10 OFFSET(${page} * 10)`,
+      `SELECT * FROM product WHERE active = true LIMIT 10 OFFSET(${page - 1} * 10)`,
     )
     return products
   }

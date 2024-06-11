@@ -1,4 +1,3 @@
-import Id from "@/adapters/out/persistence/generateID/Id"
 import Category from "@/core/category/domain/entities/Category"
 import ICategoryRepository from "@/core/category/ports/out/ICategoryRepository"
 import AppErros from "@/core/shared/error/AppErros"
@@ -8,7 +7,10 @@ import PageResponse from "@/core/shared/pagination/PageResponse"
 import Pagination from "@/core/shared/pagination/Pagination"
 
 export default class CategoryUseCase {
-  constructor(private categoryRepository: ICategoryRepository) {}
+  constructor(
+    private categoryRepository: ICategoryRepository,
+    private idGenerator: IdGenerator,
+  ) {}
 
   async findById(id: string): Promise<Category> {
     const category = await this.categoryRepository.findById(id)
@@ -24,12 +26,12 @@ export default class CategoryUseCase {
     if (existingCategory) {
       throw new AppErros(ErrosMessage.CATEGORY_ALREADY_EXISTS)
     }
-    const idGenerator: IdGenerator = new Id()
+
     const newCategory = Category.factory({
       name: category.name,
       description: category.description,
       activite: category.activite,
-      id: idGenerator.gerar(),
+      id: this.idGenerator.gerar(),
     })
 
     await this.categoryRepository.registerCategory(newCategory)
