@@ -1,21 +1,21 @@
 export const categoryPath = {
-  '/api/categories': {
+  "/api/categories": {
     post: {
-      tags: ['Categories'],
-      summary: 'Register Category',
+      tags: ["Categories"],
+      summary: "Register Category",
       requestBody: {
         content: {
-          'application/json': {
+          "application/json": {
             schema: {
-              type: 'object',
+              type: "object",
               properties: {
                 name: {
-                  type: 'string',
-                  example: 'Nome da categoria',
+                  type: "string",
+                  example: "Nome da categoria",
                 },
                 description: {
-                  type: 'string',
-                  example: 'Descrição da categoria',
+                  type: "string",
+                  example: "Descrição da categoria",
                 },
               },
             },
@@ -24,74 +24,74 @@ export const categoryPath = {
       },
       responses: {
         201: {
-          description: 'Created',
+          description: "Created",
         },
         200: {
-          description: 'Success',
+          description: "Success",
         },
         400: {
-          description: 'Invalid Request',
+          description: "Invalid Request",
         },
         401: {
-          description: 'Invalid Access',
+          description: "Invalid Access",
         },
         500: {
-          description: 'Internal Server Error',
+          description: "Internal Server Error",
         },
       },
     },
     get: {
-      tags: ['Categories'],
-      summary: 'List All Categories',
+      tags: ["Categories"],
+      summary: "List All Categories",
       parameters: [
         {
-          name: 'page',
-          in: 'query',
-          description: 'Page Number',
+          name: "page",
+          in: "query",
+          description: "Page Number",
           required: true,
-          default: 0,
+          default: 1,
           schema: {
-            type: 'number',
+            type: "number",
           },
         },
       ],
       responses: {
         200: {
-          description: 'Success',
+          description: "Success",
         },
         400: {
-          description: 'Invalid Request',
+          description: "Invalid Request",
         },
         401: {
-          description: 'Invalid Access',
+          description: "Invalid Access",
         },
         404: {
-          description: 'Categories not found',
+          description: "Categories not found",
         },
         500: {
-          description: 'Internal Server Error',
+          description: "Internal Server Error",
         },
       },
     },
     put: {
-      tags: ['Categories'],
-      summary: 'Edit Category',
+      tags: ["Categories"],
+      summary: "Edit Category",
       requestBody: {
         content: {
-          'application/json': {
+          "application/json": {
             schema: {
               properties: {
                 id: {
-                  type: 'number',
+                  type: "number",
                   example: 12345,
                 },
                 name: {
-                  type: 'string',
-                  example: 'Nome da categoria',
+                  type: "string",
+                  example: "Nome da categoria",
                 },
                 description: {
-                  type: 'string',
-                  example: 'Descrição da categoria',
+                  type: "string",
+                  example: "Descrição da categoria",
                 },
               },
             },
@@ -100,87 +100,87 @@ export const categoryPath = {
       },
       responses: {
         200: {
-          description: 'Success',
+          description: "Success",
         },
         400: {
-          description: 'Invalid Request',
+          description: "Invalid Request",
         },
         401: {
-          description: 'Invalid Access',
+          description: "Invalid Access",
         },
         404: {
-          description: 'Category not found',
+          description: "Category not found",
         },
         500: {
-          description: 'Internal Server Error',
+          description: "Internal Server Error",
         },
       },
     },
     delete: {
-      tags: ['Categories'],
-      summary: 'Delete Category',
+      tags: ["Categories"],
+      summary: "Delete Category",
       parameters: [
         {
-          name: 'id',
-          in: 'query',
-          description: 'Category Code',
+          name: "id",
+          in: "query",
+          description: "Category Code",
           required: true,
           schema: {
-            type: 'number',
+            type: "number",
           },
         },
       ],
       responses: {
         200: {
-          description: 'Sucesso',
+          description: "Sucesso",
         },
         400: {
-          description: 'Requisição inválida',
+          description: "Requisição inválida",
         },
         401: {
-          description: 'Acesso inválido',
+          description: "Acesso inválido",
         },
         404: {
-          description: 'Categoria não encontrada',
+          description: "Categoria não encontrada",
         },
         500: {
-          description: 'Erro interno do servidor',
+          description: "Erro interno do servidor",
         },
       },
     },
   },
 
-  '/api/categories/id': {
+  "/api/categories/id": {
     get: {
-      tags: ['Categories'],
-      summary: 'List Category by Id',
+      tags: ["Categories"],
+      summary: "List Category by Id",
       parameters: [
         {
-          name: 'id',
-          in: 'query',
-          description: 'Id',
+          name: "id",
+          in: "query",
+          description: "Id",
           required: true,
-          default: '',
+          default: "",
           schema: {
-            type: 'string',
+            type: "string",
           },
         },
       ],
       responses: {
         200: {
-          description: 'Success',
+          description: "Success",
         },
         400: {
-          description: 'Invalid Request',
+          description: "Invalid Request",
         },
         401: {
-          description: 'Invalid Access',
+          description: "Invalid Access",
         },
         404: {
-          description: 'Category not found',
+          description: "Category not found",
         },
         500: {
-          description: 'Internal Server Error',
+          description: "Internal Server Error",
         },
       },
     },

@@ -14,6 +14,10 @@ const ErrosMessage = {
   INFORM_NUMBER_CPF: "Inform the number of Cpf",
   ITEMS_WITH_QUANTITY_ZEROED: "Items with quantity zeroed",
   NECESSARY_INCLUD_ITEM: "Necessary Includ the one item.",
+  INVALID_NAME: "NAME MUST NOT BE EMPTY",
+  INVALID_PRICE: "PRICE MUST BE GREATER THAN 0",
+  CATEGORY_ALREADY_EXISTS: "CATEGORY ALREADY EXISTS.",
+  CATEGORY_NOT_FOUND: "CATEGORY NOT FOUND.",
 } as const
 
 export default ErrosMessage

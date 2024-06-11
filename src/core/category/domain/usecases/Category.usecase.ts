@@ -1,20 +1,41 @@
-import ICategoryUseCase from '@/core/category/ports/in/ICategoryUseCase'
-import Category from '@/core/category/domain/entities/Category'
-import PageResponse from '@/core/shared/pagination/PageResponse'
-import Pagination from '@/core/shared/pagination/Pagination'
+import Id from "@/adapters/out/persistence/generateID/Id"
+import Category from "@/core/category/domain/entities/Category"
+import ICategoryRepository from "@/core/category/ports/out/ICategoryRepository"
+import AppErros from "@/core/shared/error/AppErros"
+import ErrosMessage from "@/core/shared/error/ErrosMessage"
+import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
+import PageResponse from "@/core/shared/pagination/PageResponse"
+import Pagination from "@/core/shared/pagination/Pagination"
 
 export default class CategoryUseCase {
-  constructor(private categoryRepository: ICategoryUseCase) {}
+  constructor(private categoryRepository: ICategoryRepository) {}
 
   async findById(id: string): Promise<Category> {
-    return await this.categoryRepository.findById(id)
+    const category = await this.categoryRepository.findById(id)
+    if (!category) {
+      throw new AppErros(ErrosMessage.CATEGORY_NOT_FOUND)
+    }
+    return category
   }
 
   async registerCategory(category: Category): Promise<void> {
-    await this.categoryRepository.registerCategory(category)
+    const existingCategory = await this.categoryRepository.findById(category.id)
+
+    if (existingCategory) {
+      throw new AppErros(ErrosMessage.CATEGORY_ALREADY_EXISTS)
+    }
+    const idGenerator: IdGenerator = new Id()
+    const newCategory = Category.factory({
+      name: category.name,
+      description: category.description,
+      activite: category.activite,
+      id: idGenerator.gerar(),
+    })
+
+    await this.categoryRepository.registerCategory(newCategory)
   }
 
-  async listAll(page: number = 0): Promise<Category[]> {
+  async listAll(page: number = 1): Promise<Category[]> {
     return await this.categoryRepository.listAll(page)
   }
 
@@ -35,12 +56,16 @@ export default class CategoryUseCase {
       pagination,
     }
   }
+
   async delete(categoryId: string): Promise<void> {
-    this.categoryRepository.delete(categoryId)
+    const category = await this.findById(categoryId)
+    if (!category) {
+      throw new AppErros(ErrosMessage.CATEGORY_NOT_FOUND)
+    }
+    await this.categoryRepository.delete(categoryId)
   }
 
   async countCategories(): Promise<number> {
-    const qtde = await this.categoryRepository.countCategories()
-    return qtde
+    return await this.categoryRepository.countCategories()
   }
 }

@@ -1,7 +1,7 @@
-import ProductRepository from '@/adapters/out/persistence/Product/ProductRepository'
-import Product from '@/core/product/domain/entities/Product'
-import ProductUseCase from '@/core/product/domain/usecases/Product.usecase'
-import PageResponse from '@/core/shared/pagination/PageResponse'
+import ProductRepository from "@/adapters/out/persistence/Product/ProductRepository"
+import Product from "@/core/product/domain/entities/Product"
+import ProductUseCase from "@/core/product/domain/usecases/Product.usecase"
+import PageResponse from "@/core/shared/pagination/PageResponse"
 
 export default class ProductController {
   private productRepository: ProductRepository
@@ -37,5 +37,9 @@ export default class ProductController {
 
   async delete(productId: string): Promise<void> {
     await this.productUseCase.delete(productId)
+  }
+
+  async updateProduct(product: Product): Promise<void> {
+    await this.productUseCase.updateProduct(product)
   }
 }

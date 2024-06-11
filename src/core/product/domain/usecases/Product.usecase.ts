@@ -1,11 +1,14 @@
-import ErrosMessage from '@/core/shared/error/ErrosMessage'
-import IProductRepository from '../../ports/out/IProductRepository'
-import Product from '../entities/Product'
-import Id from '@/adapters/out/persistence/generateID/Id'
-import AppErros from '@/core/shared/error/AppErros'
-import PageResponse from '@/core/shared/pagination/PageResponse'
-import Pagination from '@/core/shared/pagination/Pagination'
+import Id from "@/adapters/out/persistence/generateID/Id"
+import AppErros from "@/core/shared/error/AppErros"
+import ErrosMessage from "@/core/shared/error/ErrosMessage"
+import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
+import PageResponse from "@/core/shared/pagination/PageResponse"
+import Pagination from "@/core/shared/pagination/Pagination"
+import IProductRepository from "../../ports/out/IProductRepository"
+import Product from "../entities/Product"
+
 export default class ProductUseCase {
+  private idGenerator: IdGenerator
   constructor(private productRepository: IProductRepository) {}
 
   async registerProduct(product: Product): Promise<void> {
@@ -13,15 +16,16 @@ export default class ProductUseCase {
     if (existingProduct) {
       throw new Error(ErrosMessage.PRODUTO_JA_EXISTE)
     }
-
-    const newProduct = new Product(
-      Id.gerar(),
-      product.name,
-      product.description,
-      product.price,
-      product.categoryId,
-      product.image,
-    )
+    const idGenerator: IdGenerator = new Id()
+    const newProduct = Product.factory({
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      categoryId: product.categoryId,
+      image: product.image,
+      activite: product.activite,
+      id: idGenerator.gerar(),
+    })
 
     await this.productRepository.registerProduct(newProduct)
   }
@@ -33,7 +37,7 @@ export default class ProductUseCase {
   }
 
   async findByCategory(categoryId: string, page: number): Promise<PageResponse<Product>> {
-    const products = await this.productRepository.findByCategory(categoryId)
+    const products = await this.productRepository.findByCategory(categoryId, page)
 
     if (!products) {
       throw new AppErros(ErrosMessage.PRODUTO_NAO_LOCALIZADO)
@@ -76,5 +80,9 @@ export default class ProductUseCase {
 
   async delete(productId: string): Promise<void> {
     return this.productRepository.delete(productId)
+  }
+
+  async updateProduct(product: Product): Promise<void> {
+    await this.productRepository.updateProduct(product)
   }
 }
