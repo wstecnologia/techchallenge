@@ -1,12 +1,14 @@
 import Id from "@/adapters/out/persistence/generateID/Id"
 import AppErros from "@/core/shared/error/AppErros"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
+import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import PageResponse from "@/core/shared/pagination/PageResponse"
 import Pagination from "@/core/shared/pagination/Pagination"
 import IProductRepository from "../../ports/out/IProductRepository"
 import Product from "../entities/Product"
 
 export default class ProductUseCase {
+  private idGenerator: IdGenerator
   constructor(private productRepository: IProductRepository) {}
 
   async registerProduct(product: Product): Promise<void> {
@@ -14,15 +16,16 @@ export default class ProductUseCase {
     if (existingProduct) {
       throw new Error(ErrosMessage.PRODUTO_JA_EXISTE)
     }
-
-    const newProduct = new Product(
-      Id.gerar(),
-      product.name,
-      product.description,
-      product.price,
-      product.categoryId,
-      product.image,
-    )
+    const idGenerator: IdGenerator = new Id()
+    const newProduct = Product.factory({
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      categoryId: product.categoryId,
+      image: product.image,
+      activite: product.activite,
+      id: idGenerator.gerar(),
+    })
 
     await this.productRepository.registerProduct(newProduct)
   }
@@ -80,15 +83,6 @@ export default class ProductUseCase {
   }
 
   async updateProduct(product: Product): Promise<void> {
-    const existingProduct = await this.productRepository.findById(product.id)
-    const newProduct = new Product(
-      product.id,
-      product.name,
-      product.description,
-      product.price,
-      product.categoryId,
-      product.image,
-    )
-    await this.productRepository.updateProduct(newProduct)
+    await this.productRepository.updateProduct(product)
   }
 }

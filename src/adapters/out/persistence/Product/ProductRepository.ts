@@ -1,11 +1,10 @@
 import Product from "@/core/product/domain/entities/Product"
 import IProductRepository from "@/core/product/ports/out/IProductRepository"
 import db from "../DB/db"
-import Id from "../generateID/Id"
 
 export default class ProductRepository implements IProductRepository {
   async registerProduct(product: Product): Promise<void> {
-    const productId = Id.gerar()
+    const productId  = product.id
 
     await db.query(
       `INSERT INTO product (id, name, description, price, categoryid, image)
@@ -38,9 +37,9 @@ export default class ProductRepository implements IProductRepository {
   }
 
   async findByCategory(categoryid: string, page: number = 1): Promise<Product[]> {
-    const query = `SELECT * FROM product WHERE categoryid = $1 AND active = true LIMIT 10 OFFSET((${
-      page - 1
-    } * 10))`
+    const query = `SELECT * FROM product WHERE categoryid = $1 AND active = true LIMIT 10
+    OFFSET(${page - 1} * 10)`
+
     const result = await db.any(query, [categoryid])
 
     return result
@@ -63,7 +62,7 @@ export default class ProductRepository implements IProductRepository {
                    SET name = $1,
                        description = $2,
                        price = $3,
-                       categoryid = $4,
+                       categoryId = $4,
                        image = $5
                    WHERE id = $6 AND active = true`
 

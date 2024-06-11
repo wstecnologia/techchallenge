@@ -16,6 +16,7 @@ class ProductRoutes {
     this.router.get("/products/id", ExpressAdapter.adaptRoute(this.findById.bind(this)))
     this.router.get("/products/category", ExpressAdapter.adaptRoute(this.findByCategory.bind(this)))
     this.router.get("/products", ExpressAdapter.adaptRoute(this.listAll.bind(this)))
+    this.router.put("/products", ExpressAdapter.adaptRoute(this.UpdateProduct.bind(this)))
     this.router.delete("/products/id", ExpressAdapter.adaptRoute(this.delete.bind(this)))
   }
 

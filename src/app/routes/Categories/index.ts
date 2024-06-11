@@ -1,20 +1,22 @@
 import CategoryController from "@/adapters/in/controllers/Category/CategoryController"
+import CategoryRepository from "@/adapters/out/persistence/Category/CategoryRepository"
+import CategoryUseCase from "@/core/category/domain/usecases/Category.usecase"
 import ExpressAdapter from "../ExpressAdapter"
-
 class CategoryRoutes {
   private router: any
   private categoryController: CategoryController
 
   constructor(router: any) {
     this.router = router
-    this.categoryController = new CategoryController()
+    const categoryRepository = new CategoryRepository()
+    const categoryUserCase = new CategoryUseCase(categoryRepository)
+    this.categoryController = new CategoryController(categoryUserCase)
     this.initializeRoutes()
   }
 
   private initializeRoutes() {
     this.router.post("/categories", ExpressAdapter.adaptRoute(this.registerCategory.bind(this)))
     this.router.get("/categories/id", ExpressAdapter.adaptRoute(this.findById.bind(this)))
-    this.router.post("/category", ExpressAdapter.adaptRoute(this.registerCategory.bind(this)))
     this.router.get("/categories", ExpressAdapter.adaptRoute(this.listAll.bind(this)))
     this.router.delete("/categories", ExpressAdapter.adaptRoute(this.deleteCategory.bind(this)))
   }
@@ -25,6 +27,7 @@ class CategoryRoutes {
 
   private async findById({ query }: { query: any }) {
     const { id } = query
+    console.log(`id : ${id}`)
     return this.categoryController.findById(id.toString())
   }
 
