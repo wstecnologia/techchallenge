@@ -1,9 +1,11 @@
 import OrderRepository from "@/adapters/out/persistence/Order/OrderRepository"
+import Id from "@/adapters/out/persistence/generateID/Id"
 import Order from "@/core/order/domain/entities/Order"
 import OrderUseCase from "@/core/order/domain/usecases/Order.usecase"
 
 const orderRepository = new OrderRepository()
-const orderUseCase = new OrderUseCase(orderRepository)
+const idGenerator = new Id()
+const orderUseCase = new OrderUseCase(orderRepository, idGenerator)
 
 export default class OrderController {
   static async addOrder(order: Order) {

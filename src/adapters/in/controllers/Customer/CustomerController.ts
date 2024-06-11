@@ -1,20 +1,22 @@
 import CustomerUseCase from "@/core/customer/domain/usecase/Customer.usecase"
-import CustomerRepository from "@/adapters/out/persistence/Customer/CustomerRepository"
 import Customer from "@/core/customer/domain/entities/Customer"
-import { error } from "console"
+import CustomerRepository from "@/adapters/out/persistence/Customer/CustomerRepository"
+import Id from "@/adapters/out/persistence/generateID/Id"
+
+const customerRepository = new CustomerRepository()
+const idGenerator = new Id()
+const customerUserCase = new CustomerUseCase(customerRepository, idGenerator)
 
 export default class CustomerController {
-  constructor(private customerUseCase: CustomerUseCase) {}
-
-  async register(customer: Customer) {
-    return await this.customerUseCase.registerCustomer(customer)
+  static async register(customer: Customer) {
+    return await customerUserCase.registerCustomer(customer)
   }
 
-  async listAll(page: number = 0) {
-    return await this.customerUseCase.listAllCustomers(page)
+  static async listAll(page: number = 0) {
+    return await customerUserCase.listAllCustomers(page)
   }
 
-  async getCustomerCpf(cpf: string) {
-    return await this.customerUseCase.getCustomerCpf(cpf)
+  static async getCustomerCpf(cpf: string) {
+    return await customerUserCase.getCustomerCpf(cpf)
   }
 }

@@ -7,8 +7,10 @@ import AppErros from "@/core/shared/error/AppErros"
 import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 
 export default class CustomerUseCase {
-  private idGenerator: IdGenerator
-  constructor(private customerRepository: ICustomerRepository) {}
+  constructor(
+    private customerRepository: ICustomerRepository,
+    private iGenerator: IdGenerator,
+  ) {}
 
   async registerCustomer(newCustomers: Customer): Promise<Customer> {
     const cpf = newCustomers.cpf.replace(/\D/g, "")
@@ -23,10 +25,10 @@ export default class CustomerUseCase {
     }
 
     const newCustomer = Customer.factory({
+      id: this.iGenerator.gerar(),
       name: newCustomers.name,
       email: newCustomers.email,
-      cpf: newCustomers.cpf,
-      idGenerator: this.idGenerator,
+      cpf,
     })
 
     await this.customerRepository.save(newCustomer)
@@ -57,15 +59,16 @@ export default class CustomerUseCase {
   }
 
   async getCustomerCpf(cpf: string): Promise<Customer | null> {
-    if (cpf.length !== 11) {
+    const _cpf = cpf.replace(/\D/g, "")
+    if (_cpf.length !== 11) {
       throw new AppErros(ErrosMessage.NUMBER_OF_CPF_MUST_CONTAIN_DIGITS)
     }
 
-    if (!cpf.toString().trim()) {
+    if (!_cpf.toString().trim()) {
       throw new AppErros(ErrosMessage.ENTER_VALID_NUMBER)
     }
 
-    const returnValidation = await this.customerRepository.findByCpf(cpf)
+    const returnValidation = await this.customerRepository.findByCpf(_cpf)
     if (!returnValidation) throw new AppErros(ErrosMessage.USUARIO_NAO_LOCALIZADO, 401)
 
     return returnValidation

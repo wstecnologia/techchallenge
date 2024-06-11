@@ -1,30 +1,27 @@
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import AppErros from "@/core/shared/error/AppErros"
 import ErrosMessage from "@/core/shared/error/ErrosMessage"
 
 interface ICustomer {
+  id?: string
   name: string
   cpf: string
   email: string
-  idGenerator: IdGenerator
 }
 
 export default class Customer {
-  private _id: string
   private _cpf: string
 
   constructor(
+    private _id: string,
     private _name: string,
     private _email: string,
     cpf: string,
-    idGenerator: IdGenerator,
   ) {
-    this._id = idGenerator.gerar()
     this._cpf = this.cpfValidate(cpf)
   }
 
   static factory(customer: ICustomer) {
-    return new Customer(customer.name, customer.cpf, customer.email, customer.idGenerator)
+    return new Customer(customer.id, customer.name, customer.email, customer.cpf)
   }
 
   //getter

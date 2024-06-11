@@ -1,5 +1,5 @@
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import AppErros from "@/core/shared/error/AppErros"
+import ErrosMessage from "@/core/shared/error/ErrosMessage"
 
 export default class OrderItems {
   private _id: string
@@ -13,15 +13,13 @@ export default class OrderItems {
     private _productDescription: string,
     private _productPrice: number,
     private _active: boolean,
-    idGenerator: IdGenerator,
   ) {
-    this._id = idGenerator.gerar()
     this._quantity = this.validateQuantity(quantity)
     this._dataCreated = new Date().toLocaleString()
   }
 
   //getters
-  get id(): string {
+  get id(): string | undefined {
     return this._id
   }
 
@@ -54,6 +52,9 @@ export default class OrderItems {
   }
 
   //setters
+  set id(value: string) {
+    this._id = value
+  }
 
   set numberOrder(value: number) {
     this._numberOrder = value
@@ -81,7 +82,7 @@ export default class OrderItems {
 
   private validateQuantity(value: number): number {
     if (typeof value !== "number" || isNaN(value) || value <= 0) {
-      throw new AppErros(`Item com quantidade zerada, verifique!`)
+      throw new AppErros(ErrosMessage.ITEMS_WITH_QUANTITY_ZEROED)
     }
     return value
   }

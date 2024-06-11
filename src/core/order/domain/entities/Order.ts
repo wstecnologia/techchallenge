@@ -1,50 +1,48 @@
-import AppErros from "@/core/shared/error/AppErros"
 import OrderItems from "./OrderItems"
-import { IdGenerator } from "@/core/shared/GeneratorID/IdGenerator"
 import { Payment } from "@/core/payment/domain/entities/Payment"
 
 interface IOrder {
+  id?: string
   numberOrder: number
   customerId: string
   items: OrderItems[]
   payment: Payment
-  situationId: string
+  situationId?: string
   observation: string
-  idGenerator: IdGenerator
 }
 
 export default class Order {
-  private _id: string
+  private _id?: string
   private _dataCreated: string
   private _customerId: string
-  private _items: OrderItems[] = []
   private _payments: Payment
+  private _situationId?: string
 
   constructor(
+    id: string,
     private _number: number,
     customerId: string,
-    items: OrderItems[],
+    private _items: OrderItems[] = [],
     payment: Payment,
-    private _situationId: string,
+    situationId: string,
     private _observation: string,
-    idGenerator: IdGenerator,
   ) {
-    this._id = idGenerator.gerar()
-    this._payments = this.addPayment(payment)
+    this._id = id
+    this._payments = payment
     this._dataCreated = new Date().toLocaleString()
+    this._situationId = this.validateSituation(situationId)
     this._customerId = this.validateCustomer(customerId)
-    this.setItems(items)
   }
 
   static factory(order: IOrder) {
     return new Order(
+      order.id,
       order.numberOrder,
       order.customerId,
       order.items,
       order.payment,
       order.situationId,
       order.observation,
-      order.idGenerator,
     )
   }
 
@@ -82,8 +80,12 @@ export default class Order {
   }
 
   //setters
+  set id(value: string) {
+    this._id = value
+  }
+
   set payment(value: Payment) {
-    this._payments = this.addPayment(value)
+    this._payments = value
   }
 
   set number(value: number) {
@@ -95,7 +97,7 @@ export default class Order {
   }
 
   set situationId(value: string) {
-    this._situationId = value
+    this._situationId = this.validateSituation(value)
   }
 
   set observation(value: string) {
@@ -103,33 +105,15 @@ export default class Order {
   }
 
   set items(values: OrderItems[]) {
-    this.setItems(values)
+    this._items = values
   }
 
-  private setItems(values: OrderItems[]) {
-    if (!values.length) {
-      throw new AppErros("Necessario incluir ao menos um produto no pedido, verifique")
+  private validateSituation(value: string): string {
+    if (!value || value === "") {
+      return "9e07b6f1-c470-4318-8c1a-2441771b600e"
+    } else {
+      return value
     }
-
-    this._items = []
-    values.forEach(item => this.addItem(item))
-  }
-
-  private addPayment(payment: Payment) {
-    return new Payment(this._id, payment.amount)
-  }
-
-  private addItem(orderItem: OrderItems) {
-    this._items.push(
-      new OrderItems(
-        this._number,
-        orderItem.quantity,
-        orderItem.productId,
-        orderItem.productDescription,
-        orderItem.productPrice,
-        true,
-      ),
-    )
   }
 
   private validateCustomer(value: string): string {
