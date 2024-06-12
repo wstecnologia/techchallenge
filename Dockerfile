@@ -4,10 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-COPY data /data
-
-COPY sql /sql
-
 RUN npm install
 
 EXPOSE 3000
