@@ -4,8 +4,17 @@ import db from "../DB/db"
 
 export default class OrderRepository implements IOrderRepository {
   async findOrderByNumber(orderNumber: number): Promise<Order | null> {
-    const order = await db.oneOrNone(`
-      SELECT * FROM orders where number = ${orderNumber}`)
+    const order = await db.oneOrNone(`SELECT * FROM orders where number = $1 `, [orderNumber])
+
+    return order
+  }
+
+  async findOrderByStatus(status: string): Promise<Order | null> {
+    const order = await db.oneOrNone(
+      `SELECT * FROM orders where situationid = $1 
+      order by updated_at desc limit 1`,
+      [status],
+    )
 
     return order
   }
@@ -23,10 +32,10 @@ export default class OrderRepository implements IOrderRepository {
   }
 
   async updateOrderStatus(numberOrder: number, status: string): Promise<object | null> {
-    return await db.query(`UPDATE orders SET situationId = $1 WHERE number = $2`, [
-      status,
-      numberOrder,
-    ])
+    return await db.query(
+      `UPDATE orders SET situationId = $1, updated_at = CURRENT_TIMESTAMP WHERE number = $2`,
+      [status, numberOrder],
+    )
   }
 
   async listAllOrders(page: number = 0): Promise<Order[] | null> {
@@ -38,8 +47,9 @@ export default class OrderRepository implements IOrderRepository {
         s.description situation,
         c.name customerName
       FROM orders o
-      inner join situations s on s.id = o.situationid
-      inner join customers c on c.id = o.customerid 
+        inner join situations s on s.id = o.situationid
+        inner join customers c on c.id = o.customerid 
+      order by o.updated_at desc
       LIMIT 10 
       OFFSET(${page - 1} * 10)`,
     )

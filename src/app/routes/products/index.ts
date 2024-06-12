@@ -47,8 +47,6 @@ class ProductRoutes {
   private async UpdateProduct({ body }: { body: any }) {
     return this.productController.updateProduct(body)
   }
-
-  privat
 }
 
 export default ProductRoutes

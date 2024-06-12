@@ -1,9 +1,9 @@
-import { Router } from 'express'
+import { Router } from "express"
 
-import CustomersRoutes from './Customers'
-import OrderRoutes from './Orders'
-import CategoryRoutes from './Categories'
-import ProductRoutes from './Products'
+import CustomersRoutes from "./Customers"
+import OrderRoutes from "./Orders"
+import CategoryRoutes from "./Categories"
+import ProductRoutes from "./Products"
 
 const routes = Router()
 

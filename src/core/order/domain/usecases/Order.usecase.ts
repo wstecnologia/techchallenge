@@ -89,4 +89,15 @@ export default class OrderUseCase {
       items: orders,
     }
   }
+
+  async updateStatus(orderId: number, status: string) {
+    await this._orderRepository.updateOrderStatus(orderId, status)
+    return {
+      message: "Order finalized of success!",
+    }
+  }
+
+  async consultStatus(status: string): Promise<Order | null> {
+    return this._orderRepository.findOrderByStatus(status)
+  }
 }
