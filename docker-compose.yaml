@@ -21,7 +21,8 @@ services:
       - 8081:8080
 
   lanchonetews:
-    image: wstecnologia/lanchonetews:v1.3
+    build: 
+      context: ./lanchonetews
     restart: always
     ports:
       - 3000:3000

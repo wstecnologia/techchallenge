@@ -1,4 +1,3 @@
-
 # Lanchonete WS
 
 ### Aplicação de Pedidos para Lanchonete WS
@@ -6,17 +5,18 @@
 Este é um sistema de pedidos para uma lanchonete desenvolvido em NodeJs/TypeScript. Ele permite a identificação dos clientes, criação de pedidos, processamento de pagamento e acompanhamento da preparação e entrega ao cliente.
 
 ### Configuração do Ambiente
+
 Clone este repositório https://github.com/wstecnologia/techchallenge para o seu computador (acessar a branch main).
-Para iniciar a aplicação, execute o comando “docker compose up”. (É necessário que o docker esteja instalado na máquina para o correto funcionamento) 
-Após a execução do comando acima, o sistema será carregado, junto com suas dependências. 
+Para iniciar a aplicação, execute o comando “docker compose up --build”. (É necessário que o docker esteja instalado na máquina para o correto funcionamento)
+Após a execução do comando acima, o sistema será carregado, junto com suas dependências.
 Uso
 Acesse a documentação swagger da aplicação através do navegador web, digitando o endereço http://localhost:3000/api-docs/.
 
 ### Banco de Dados
-Foi utilizado o banco de dados postgresql, a imagem do mesmo está configurada no docker-compose e vai subir junto da aplicação. Ao subir, o docker vai rodar o script de criação/inserção das tabelas. 
-Foi incluído no docker-compose uma ide chamada adminer, para possíveis consultas, caso necessário. 
-Link para acessar a ide do banco: http://localhost:8081/
 
+Foi utilizado o banco de dados postgresql, a imagem do mesmo está configurada no docker-compose e vai subir junto da aplicação. Ao subir, o docker vai rodar o script de criação/inserção das tabelas.
+Foi incluído no docker-compose uma ide chamada adminer, para possíveis consultas, caso necessário.
+Link para acessar a ide do banco: http://localhost:8081/
 
 #### Rota para novo pedido: `/api/order/new`
 
@@ -53,7 +53,5 @@ Todas as listas são paginadas, iniciando com a página 1. Caso digite um númer
 As demais rodas seguem o fluxo normal conforme payloads e parâmetros.
 
 ### Observação:
+
 Na documentação é pedido que a identificação seja feita pelo CPF ou cadastro com nome e email. Porém, não vemos sentido a identificação pelo número do CPF se o mesmo não está no cadastro. Portanto colocamos como um item obrigatório.
-
-
-
