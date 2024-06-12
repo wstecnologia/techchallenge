@@ -98,7 +98,7 @@ export default class OrderRepository implements IOrderRepository {
   }
 
   async numberOrder(): Promise<number | null> {
-    const retorno = await db.oneOrNone(`select max(number) + 1 number from orders`)
+    const retorno = await db.oneOrNone(`select coalesce(max( number),999) + 1 number from orders`)
     return retorno.number
   }
 }
