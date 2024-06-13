@@ -7,7 +7,11 @@ Este é um sistema de pedidos para uma lanchonete desenvolvido em NodeJs/TypeScr
 ### Configuração do Ambiente
 
 Clone este repositório https://github.com/wstecnologia/techchallenge para o seu computador (acessar a branch main).
-Para iniciar a aplicação, execute o comando “docker compose up --build”. (É necessário que o docker esteja instalado na máquina para o correto funcionamento)
+
+Renomeie o arquivo .env.example para .env e substitua pelo conteúdo enviado na documentação do projeto.
+
+Para iniciar a aplicação, execute o comando “docker compose up --build” (se for no linux pode ser necessário adicionar sudo antes do comando), aguarde o fim da criação das imagens para o docker rodar o script de criação/inserção das tabelas. (É necessário que o docker esteja instalado na máquina para o correto funcionamento)
+
 Após a execução do comando acima, o sistema será carregado, junto com suas dependências.
 Uso
 Acesse a documentação swagger da aplicação através do navegador web, digitando o endereço http://localhost:3000/api-docs/.
